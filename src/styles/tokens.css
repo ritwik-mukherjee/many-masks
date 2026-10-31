@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Kalam:wght@400;700&family=Mukta:wght@400;600&display=swap');
+
+/* Many Masks tokens. Colours come from the suit (Mumbai local livery) and the city at golden hour. */
+:root {
+  --maroon: #7a1f1f;
+  --cream: #f2e8cf;
+  --signal: #f2c230;
+  --ink: #0e0e10;
+  --night: #0b0d17;
+  --gold: #f4a259;
+  --slate: #3b4a5c;
+
+  /* Anton: condensed poster face for the name and building titles. */
+  --f-display: 'Anton', 'Arial Narrow', Impact, sans-serif;
+  /* Kalam: hand lettering for comic caption boxes (Indian Type Foundry, also covers Devanagari). */
+  --f-caption: 'Kalam', 'Comic Sans MS', cursive;
+  /* Mukta: readable body text. */
+  --f-body: 'Mukta', system-ui, sans-serif;
+
+  --ease-swing: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}

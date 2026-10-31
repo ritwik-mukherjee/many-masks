@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html, body, #root { margin: 0; height: 100%; }
+
+body {
+  background: var(--night);
+  color: var(--cream);
+  font-family: var(--f-body);
+  font-size: 18px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--signal); outline-offset: 3px; }
+img, video, canvas { display: block; max-width: 100%; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+/* Comic caption box, used by the opening beats and panels. */
+.caption {
+  display: inline-block;
+  background: var(--cream);
+  color: var(--ink);
+  border: 3px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+  font-family: var(--f-caption);
+  font-weight: 700;
+  font-size: clamp(18px, 1.6vw, 26px);
+  line-height: 1.25;
+  padding: 0.35em 0.7em;
+}
+
+/* Phone card */
+.phone-card { min-height: 100%; display: grid; grid-template-rows: auto 1fr; background: var(--night); }
+.phone-card__poster { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.phone-card__body { padding: 24px 16px 40px; display: grid; gap: 14px; max-width: 34rem; }
+.phone-card__name { margin: 0; font-family: var(--f-display); letter-spacing: 0.02em; font-size: 20px; color: var(--signal); }
+.phone-card__title { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 13vw, 64px); line-height: 1; }
+.phone-card__body p { margin: 0; }
+.phone-card__copy { display: flex; gap: 8px; }
+.phone-card__copy input {
+  flex: 1; min-width: 0; padding: 10px 12px; border: 2px solid var(--cream); background: transparent; color: var(--cream); font: inherit; font-size: 15px;
+}
+.phone-card__copy button { padding: 10px 16px; border: 2px solid var(--ink); background: var(--signal); color: var(--ink); font-weight: 600; }
+.phone-card a { color: var(--signal); }
