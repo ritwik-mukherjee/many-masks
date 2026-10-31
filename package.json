@@ -9,7 +9,8 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "vitest run",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "media": "npx --yes http-server ../media/public -p 5174 --cors -c-1 -s"
   },
   "dependencies": {
     "react": "^19.3.1",

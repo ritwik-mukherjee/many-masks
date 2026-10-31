@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import PhoneCard from './components/PhoneCard'
+import Experience from './Experience'
 import { shouldShowPhoneCard } from './lib/device'
 
 const finePointer = () => typeof matchMedia === 'function' && matchMedia('(pointer: fine)').matches
@@ -14,5 +15,5 @@ export default function App() {
     return () => removeEventListener('resize', onResize)
   }, [])
 
-  return phone ? <PhoneCard /> : <main className="experience" />
+  return phone ? <PhoneCard /> : <Experience />
 }
