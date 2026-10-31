@@ -95,3 +95,33 @@
 .panel__voice blockquote { margin: 4px 0 0; font-family: var(--f-caption); font-size: 16px; line-height: 1.4; }
 .panel__back { justify-self: start; font-size: 22px; padding: 10px 22px; }
 .panel .route { z-index: 6; }
+
+/* Finale */
+.finale { position: fixed; inset: 0; overflow: hidden; background: #05060c; }
+.finale__still { animation: finale-push 20s ease-out forwards; }
+@keyframes finale-push { from { transform: scale(1.04); } to { transform: scale(1.12); } }
+.voicekey { position: absolute; left: 50%; bottom: 10vh; transform: translateX(-50%); z-index: 3; display: grid; justify-items: center; gap: 14px; }
+.voicekey__prompt { font-size: clamp(22px, 2vw, 32px); }
+.voicekey__listening { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 15px; color: var(--cream); text-shadow: 0 1px 8px #000; }
+.voicekey__dot { width: 10px; height: 10px; border-radius: 50%; background: #ff4d4d; animation: rec 1s ease-in-out infinite; }
+@keyframes rec { 50% { opacity: 0.25; } }
+.finale__reveal { position: absolute; left: 6vw; bottom: 10vh; z-index: 2; max-width: 34rem; display: grid; gap: 14px; justify-items: start; }
+.finale__line { margin: 0; font-family: var(--f-display); font-size: clamp(34px, 3.4vw, 56px); line-height: 1.02; text-shadow: 0 2px 24px rgb(0 0 0 / 0.8); }
+.finale__transcript { margin: 0; font-size: 17px; color: rgb(242 232 207 / 0.85); text-shadow: 0 1px 10px #000; }
+.finale__growth {
+  position: absolute; inset: 0; overflow: auto; padding: 8vh 6vw; display: grid; gap: 18px; align-content: start; max-width: 60rem;
+  background: radial-gradient(ellipse at 80% 20%, rgb(242 194 48 / 0.12), transparent 60%), var(--night);
+}
+.finale__kicker { margin: 0; font-family: var(--f-caption); font-weight: 700; color: var(--signal); font-size: 20px; }
+.finale__growth h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(44px, 5vw, 80px); line-height: 1; }
+.finale__plan p, .finale__proof p { margin: 0 0 6px; max-width: 46rem; }
+.finale__proof { border-left: 4px solid var(--signal); padding-left: 14px; }
+.finale__proof h3 { margin: 0 0 4px; font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(242 232 207 / 0.6); }
+.finale__links { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.finale__links a { color: var(--signal); font-weight: 600; }
+.finale__how { justify-self: start; border: 2px solid var(--cream); background: transparent; color: var(--cream); padding: 8px 16px; }
+.howbuilt { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgb(5 6 12 / 0.8); padding: 16px; outline: none; }
+.howbuilt__card { max-width: 36rem; background: var(--cream); color: var(--ink); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); padding: 24px; display: grid; gap: 12px; justify-items: start; }
+.howbuilt__card h2 { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: 40px; }
+.howbuilt__card p { margin: 0; }
+.howbuilt__todo { font-size: 14px; color: var(--maroon); }

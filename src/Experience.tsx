@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
 import ComicFreeze from './components/ComicFreeze'
+import Finale from './components/Finale'
 import Hub from './components/Hub'
 import LoadingScreen from './components/LoadingScreen'
 import Opening, { Intro } from './components/Opening'
@@ -62,6 +63,7 @@ export default function Experience() {
           <RouteMap dispatch={dispatch} visited={visited} defaultOpen={false} />
         </>
       )}
+      {state.phase === 'finale' && <Finale state={state} dispatch={dispatch} audio={audio} />}
     </main>
   )
 }
