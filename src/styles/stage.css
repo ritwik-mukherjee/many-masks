@@ -32,8 +32,6 @@
 .intro { position: fixed; inset: 0; background: #000; }
 .opening { position: relative; }
 .opening__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; background: #000; }
-.opening__panel { opacity: 0; transition: opacity 400ms ease; }
-.opening__panel.is-on { opacity: 1; }
 .opening__beat { position: absolute; left: 6vw; bottom: 14vh; margin: 0; z-index: 12; animation: beat-in 380ms var(--ease-swing); }
 .opening__hint { position: absolute; left: 50%; bottom: 8vh; transform: translateX(-50%); margin: 0; z-index: 12; font-family: var(--f-display); font-size: 22px; letter-spacing: 0.08em; animation: bob 1.6s ease-in-out infinite; }
 .opening__next { position: absolute; right: 6vw; bottom: 12vh; z-index: 14; }
@@ -65,3 +63,35 @@
 .swing__landing { animation: land 260ms ease-out; }
 @keyframes land { from { transform: scale(1.06) translateY(-1.5%); } to { transform: none; } }
 .swing__frame { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+/* Comic freeze */
+.freeze { position: fixed; inset: 0; z-index: 11; background: #000; }
+.freeze__canvas { object-fit: cover; }
+.freeze--css .freeze__canvas { transition: filter 900ms ease; }
+.freeze--css .freeze__canvas.is-inked { filter: contrast(1.6) saturate(0.6); }
+.freeze__panel { opacity: 0; transition: opacity 400ms ease; }
+.freeze__panel.is-on { opacity: 1; }
+.opening__stage .freeze { position: absolute; }
+
+/* Panel */
+.panel { position: fixed; inset: 0; overflow: hidden; background: #000; }
+.panel__art { animation: panel-drift 30s ease-out forwards; }
+@keyframes panel-drift { to { transform: scale(1.06); } }
+.panel__card {
+  position: absolute; left: 32px; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: min(30rem, 42vw); max-height: calc(100vh - 64px); overflow: auto;
+  background: var(--cream); color: var(--ink); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
+  padding: 22px 24px; display: grid; gap: 12px; animation: card-in 420ms var(--ease-swing);
+}
+@keyframes card-in { from { opacity: 0; transform: translate(-24px, -50%) rotate(-1.5deg); } to { opacity: 1; transform: translateY(-50%); } }
+.panel__district { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--maroon); }
+.panel__name { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(36px, 3.2vw, 52px); line-height: 1; }
+.panel__block h3 { margin: 0 0 2px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(14 14 16 / 0.6); }
+.panel__block p { margin: 0; font-size: 16px; line-height: 1.45; }
+.panel__block--proof p { font-weight: 600; }
+.panel__block--cracked { border-left: 4px solid var(--maroon); padding-left: 10px; }
+.panel__voice { margin: 0; background: var(--ink); color: var(--cream); padding: 12px 14px; }
+.panel__voice figcaption { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
+.panel__voice blockquote { margin: 4px 0 0; font-family: var(--f-caption); font-size: 16px; line-height: 1.4; }
+.panel__back { justify-self: start; font-size: 22px; padding: 10px 22px; }
+.panel .route { z-index: 6; }

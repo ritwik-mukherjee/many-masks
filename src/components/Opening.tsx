@@ -4,6 +4,7 @@ import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
 import { scrollToTime } from '../lib/scrub'
 import type { JourneyAction } from '../state/journey'
+import ComicFreeze from './ComicFreeze'
 import LensOverlay from './LensOverlay'
 
 type Props = { dispatch: Dispatch<JourneyAction>; reducedMotion: boolean }
@@ -47,6 +48,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
   const videoRef = useRef<HTMLVideoElement>(null)
   const [progress, setProgress] = useState(0)
   const [landed, setLanded] = useState(false)
+  const [frame, setFrame] = useState<HTMLCanvasElement | null>(null)
 
   useEffect(() => {
     if (reducedMotion) return
@@ -85,6 +87,12 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
 
   useEffect(() => {
     if (!landed) return
+    const c = document.createElement('canvas')
+    const v = videoRef.current
+    c.width = 1920
+    c.height = 1080
+    try { if (v) c.getContext('2d')?.drawImage(v, 0, 0, c.width, c.height) } catch { /* not drawable */ }
+    setFrame(c)
     audio.voice(media('aud/A-P00.mp3'))
   }, [landed, audio])
 
@@ -113,11 +121,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
     <section ref={sectionRef} className="opening" style={{ height: '600vh' }}>
       <div className="opening__stage">
         <video ref={videoRef} className="fill" src={media('vid/opening.mp4')} muted playsInline preload="auto" crossOrigin="anonymous" />
-        <img
-          className={`fill opening__panel${landed ? ' is-on' : ''}`}
-          src={media('img/P00.jpg')}
-          alt="Comic panel: the masked hero landing on a college terrace at sunrise"
-        />
+        {frame && <ComicFreeze source={frame} panelSrc="img/P00.jpg" audio={audio} reducedMotion={false} onDone={() => {}} />}
         <LensOverlay visible={!landed} />
         <p className="opening__beat" key={beat.text}><span className="caption">{beat.text}</span></p>
         {!landed && progress < 0.02 && <p className="opening__hint">Scroll to swing</p>}
