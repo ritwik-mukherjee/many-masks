@@ -2,7 +2,8 @@ import { useEffect, useMemo, useReducer } from 'react'
 import Hub from './components/Hub'
 import LoadingScreen from './components/LoadingScreen'
 import Opening, { Intro } from './components/Opening'
-import type { BuildingId } from './data/buildings'
+import SwingPlayer from './components/SwingPlayer'
+import { buildingById, type BuildingId } from './data/buildings'
 import { createAudio } from './lib/audio'
 import { prefersReducedMotion } from './lib/device'
 import { loadVisited, saveVisited } from './lib/visited'
@@ -28,6 +29,15 @@ export default function Experience() {
       {state.phase === 'intro' && <Intro dispatch={dispatch} reducedMotion={reducedMotion} />}
       {state.phase === 'opening' && <Opening dispatch={dispatch} audio={audio} reducedMotion={reducedMotion} />}
       {state.phase === 'hub' && <Hub dispatch={dispatch} visited={visited} />}
+      {state.phase === 'swinging' && state.current && (
+        <SwingPlayer
+          key={state.current}
+          building={buildingById(state.current)}
+          audio={audio}
+          reducedMotion={reducedMotion}
+          onEnded={() => dispatch({ type: 'SWING_ENDED' })}
+        />
+      )}
     </main>
   )
 }
