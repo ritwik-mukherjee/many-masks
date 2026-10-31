@@ -33,7 +33,7 @@ function preload(b: Building) {
 
 const centroid = (pts: [number, number][]) => pts.reduce((a, p) => [a[0] + p[0] / pts.length, a[1] + p[1] / pts.length], [0, 0])
 
-export default function Hub({ dispatch, visited }: { dispatch: Dispatch<JourneyAction>; visited: BuildingId[] }) {
+export default function Hub({ dispatch, visited, reducedMotion = false }: { dispatch: Dispatch<JourneyAction>; visited: BuildingId[]; reducedMotion?: boolean }) {
   const view = useViewport()
   const { scale, offsetX, offsetY } = coverTransform(IMG, view)
   const [hovered, setHovered] = useState<Building | null>(null)
@@ -46,7 +46,7 @@ export default function Hub({ dispatch, visited }: { dispatch: Dispatch<JourneyA
   return (
     <section
       className="hub"
-      onMouseMove={(e) => setTilt({ x: (e.clientX / view.w - 0.5) * 2, y: (e.clientY / view.h - 0.5) * 2 })}
+      onMouseMove={(e) => { if (!reducedMotion) setTilt({ x: (e.clientX / view.w - 0.5) * 2, y: (e.clientY / view.h - 0.5) * 2 }) }}
     >
       <div className="hub__world" style={{ ...box, transform: `translate(${-tilt.x * 1}%, ${-tilt.y * 0.6}%) scale(1.03)` }}>
         <img className="hub__img" src={media('img/H01.jpg')} alt="The Mumbai skyline at golden hour seen from a rooftop, with the buildings of Ritwik's work" />
@@ -81,9 +81,17 @@ export default function Hub({ dispatch, visited }: { dispatch: Dispatch<JourneyA
         <p className="hub__sub">The glow on the horizon is where this ends.</p>
       </header>
       <RouteMap dispatch={dispatch} visited={visited} defaultOpen={false} />
-      <p className="hub__ticker" aria-label="Also on the skyline">
-        <span>{[...rooftopDetails, ...rooftopDetails].join('   ·   ')}</span>
-      </p>
+      {reducedMotion ? (
+        <ul className="hub__details" aria-label="Also on the skyline">
+          {rooftopDetails.map((d) => <li key={d}>{d}</li>)}
+        </ul>
+      ) : (
+        <p className="hub__ticker">
+          <span className="visually-hidden">Also on the skyline: </span>
+          <span aria-hidden="true">{[...rooftopDetails, ...rooftopDetails].join('   ·   ')}</span>
+          <span className="visually-hidden">{rooftopDetails.join(', ')}</span>
+        </p>
+      )}
     </section>
   )
 }

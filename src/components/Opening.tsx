@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type Dispatch } from 'react'
 import { openingBeats } from '../data/opening'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
-import { scrollToTime } from '../lib/scrub'
+import { scrollToTime, shouldSeek } from '../lib/scrub'
 import type { JourneyAction } from '../state/journey'
 import ComicFreeze from './ComicFreeze'
 import LensOverlay from './LensOverlay'
@@ -25,6 +25,7 @@ export function Intro({ dispatch, reducedMotion }: Props) {
         <video
           className="fill"
           src={media('vid/O02.mp4')}
+          poster={media('img/O01.jpg')}
           autoPlay
           muted
           playsInline
@@ -65,8 +66,12 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
     const tick = () => {
       shown += (target - shown) * 0.15
       const v = videoRef.current
-      if (v && v.duration) v.currentTime = scrollToTime(shown, v.duration)
-      setProgress(Math.max(0, Math.min(1, shown)))
+      if (v && v.duration) {
+        const t = scrollToTime(shown, v.duration)
+        if (shouldSeek(v.currentTime, t, v.seeking)) v.currentTime = t
+      }
+      const p = Math.max(0, Math.min(1, shown))
+      setProgress((prev) => (Math.abs(prev - p) > 0.002 ? p : prev))
       const speed = Math.abs(scrollY - lastScroll)
       lastScroll = scrollY
       audio.ambient('wind', Math.min(1, speed / 60))
@@ -120,7 +125,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
   return (
     <section ref={sectionRef} className="opening" style={{ height: '600vh' }}>
       <div className="opening__stage">
-        <video ref={videoRef} className="fill" src={media('vid/opening.mp4')} muted playsInline preload="auto" crossOrigin="anonymous" />
+        <video ref={videoRef} className="fill" src={media('vid/opening.mp4')} poster={media('img/O03.jpg')} muted playsInline preload="auto" crossOrigin="anonymous" />
         {frame && <ComicFreeze source={frame} panelSrc="img/P00.jpg" audio={audio} reducedMotion={false} onDone={() => {}} />}
         <LensOverlay visible={!landed} />
         <p className="opening__beat" key={beat.text}><span className="caption">{beat.text}</span></p>

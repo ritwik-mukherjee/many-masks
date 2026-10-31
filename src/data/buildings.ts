@@ -119,8 +119,8 @@ export const buildings: Building[] = [
     hook: 'Forward deployed: working inside the client.',
     hotspot: [[5.8, 28], [11.2, 27.5], [11.2, 42], [5.8, 42]],
     built: 'Forward deployed engineer intern at a voice AI startup, from October 2026.',
-    proof: 'Working directly on live client delivery.',
-    transcript: "Right now I'm a forward deployed engineer at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. Another mask.",
+    proof: 'Public detail is limited by NDA.',
+    transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. Another mask.",
   },
   {
     id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),

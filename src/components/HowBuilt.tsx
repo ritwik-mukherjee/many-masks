@@ -15,8 +15,9 @@ export default function HowBuilt({ onClose }: { onClose: () => void }) {
       <div className="howbuilt__card">
         <h2>How this was built</h2>
         <p>
-          Every prompt behind this site was spoken, not typed, through Wispr Flow: into Claude Code to design and build it,
-          and into Emergent to ship it. The suit, the city and every swing were generated from prompts I wrote and spoke.
+          I built this by talking. Every instruction I gave Claude Code to design and build it, and Emergent to ship it,
+          went through Wispr Flow. The suit, the city and every swing were made with AI image and video tools, and I
+          chose every take.
         </p>
         <p className="howbuilt__todo">TODO_RITWIK: Flow stats screenshot and two short dictation clips.</p>
         <button type="button" className="cta" onClick={onClose}>Close</button>

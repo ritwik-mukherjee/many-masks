@@ -58,6 +58,13 @@ export function createAudio() {
       currentVoice?.pause()
       currentVoice = null
     },
+    /** Stops every loop and the current voice line. */
+    dispose() {
+      for (const el of loops.values()) el.pause()
+      loops.clear()
+      currentVoice?.pause()
+      currentVoice = null
+    },
   }
 }
 

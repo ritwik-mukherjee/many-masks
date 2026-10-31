@@ -22,6 +22,7 @@ export default function Experience() {
   const visited = useMemo<BuildingId[]>(() => [...new Set([...saved, ...state.visited])], [saved, state.visited])
 
   useEffect(() => saveVisited(visited), [visited])
+  useEffect(() => () => audio.dispose(), [audio])
 
   // The opening is a tall scroll section; every other phase is a fixed full-screen stage.
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function Experience() {
       {state.phase === 'loading' && <LoadingScreen audio={audio} dispatch={dispatch} />}
       {state.phase === 'intro' && <Intro dispatch={dispatch} reducedMotion={reducedMotion} />}
       {state.phase === 'opening' && <Opening dispatch={dispatch} audio={audio} reducedMotion={reducedMotion} />}
-      {state.phase === 'hub' && <Hub dispatch={dispatch} visited={visited} />}
+      {state.phase === 'hub' && <Hub dispatch={dispatch} visited={visited} reducedMotion={reducedMotion} />}
       {state.phase === 'swinging' && state.current && (
         <SwingPlayer
           key={state.current}

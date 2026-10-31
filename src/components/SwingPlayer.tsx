@@ -7,6 +7,8 @@ import LensOverlay from './LensOverlay'
 const PUSH_MS = 1200
 const STALL_MS = 4000
 const REDUCED_MS = 300
+const LANDING_MS = 2500
+const DEADLINE_PAD_MS = 2000
 
 type Mode = 'video' | 'push' | 'landed'
 
@@ -52,15 +54,30 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
     return () => clearTimeout(t)
   }, [audio])
 
-  // A clip that never becomes playable is treated like a missing one.
+  // A clip that never becomes playable is treated like a missing one. One that is already playable
+  // (cached revisit) is left alone. Once its length is known, it must finish by duration + 2 s even if
+  // the network stalls mid-clip or autoplay is refused.
   useEffect(() => {
     if (mode !== 'video') return
-    const t = setTimeout(() => setMode((m) => (m === 'video' ? 'push' : m)), STALL_MS)
     const v = videoRef.current
-    const clear = () => clearTimeout(t)
+    let deadline: ReturnType<typeof setTimeout> | undefined
+    const stall = setTimeout(() => setMode((m) => (m === 'video' ? 'push' : m)), STALL_MS)
+    const clear = () => clearTimeout(stall)
+    const arm = () => {
+      if (!v || !Number.isFinite(v.duration) || deadline) return
+      deadline = setTimeout(() => finish(v), v.duration * 1000 + DEADLINE_PAD_MS)
+    }
+    if (v && v.readyState >= 3) clear()
     v?.addEventListener('canplay', clear, { once: true })
-    return () => { clearTimeout(t); v?.removeEventListener('canplay', clear) }
-  }, [mode])
+    v?.addEventListener('loadedmetadata', arm)
+    arm()
+    return () => {
+      clearTimeout(stall)
+      if (deadline) clearTimeout(deadline)
+      v?.removeEventListener('canplay', clear)
+      v?.removeEventListener('loadedmetadata', arm)
+    }
+  }, [mode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (mode === 'push') {
@@ -69,9 +86,9 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
       return () => clearTimeout(t)
     }
     if (mode === 'landed') {
-      const land = () => finish(document.querySelector<HTMLImageElement>('.swing__landing') ?? undefined)
-      if (!reducedMotion) return land()
-      const t = setTimeout(land, REDUCED_MS)
+      // The landing image is drawn into the freeze only once it has loaded (onLoad below); if it fails or
+      // never loads, end anyway with no frame, and the freeze goes straight to the panel.
+      const t = setTimeout(() => finish(), reducedMotion ? REDUCED_MS : LANDING_MS)
       return () => clearTimeout(t)
     }
   }, [mode]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -102,7 +119,14 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
         />
       )}
       {mode === 'landed' && (
-        <img className="fill swing__landing" src={media(building.landing)} crossOrigin="anonymous" alt={`Landing on ${building.name}`} />
+        <img
+          className="fill swing__landing"
+          src={media(building.landing)}
+          crossOrigin="anonymous"
+          alt={`Landing on ${building.name}`}
+          onLoad={(e) => { if (!reducedMotion) finish(e.currentTarget) }}
+          onError={() => finish()}
+        />
       )}
       <canvas ref={canvasRef} data-last-frame className="swing__frame" aria-hidden="true" />
       <LensOverlay visible shake={shake} />

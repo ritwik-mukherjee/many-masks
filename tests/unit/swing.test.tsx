@@ -29,11 +29,12 @@ describe('SwingPlayer', () => {
     const onEnded = vi.fn()
     const { container } = render(<SwingPlayer building={noClip} onEnded={onEnded} reducedMotion={false} />)
     expect(container.querySelector('video')).toBeNull()
-    act(() => vi.advanceTimersByTime(1199))
+    act(() => vi.advanceTimersByTime(1200))
+    const landing = container.querySelector('img[src*="img/K03.jpg"]')
+    expect(landing).not.toBeNull()
     expect(onEnded).not.toHaveBeenCalled()
-    act(() => vi.advanceTimersByTime(1))
+    fireEvent.load(landing!)
     expect(onEnded).toHaveBeenCalledTimes(1)
-    expect(container.querySelector('img[src*="img/K03.jpg"]')).not.toBeNull()
   })
 
   test('Review Focus 1: a video error falls back to the push-in and still ends once', () => {
@@ -41,7 +42,8 @@ describe('SwingPlayer', () => {
     const { container } = render(<SwingPlayer building={cet} onEnded={onEnded} reducedMotion={false} />)
     fireEvent.error(container.querySelector('video')!)
     expect(container.querySelector('video')).toBeNull()
-    act(() => vi.advanceTimersByTime(10_000))
+    act(() => vi.advanceTimersByTime(1200))
+    act(() => vi.advanceTimersByTime(5000))
     expect(onEnded).toHaveBeenCalledTimes(1)
   })
 
@@ -50,7 +52,8 @@ describe('SwingPlayer', () => {
     const { container } = render(<SwingPlayer building={cet} onEnded={onEnded} reducedMotion={false} />)
     act(() => vi.advanceTimersByTime(4000))
     expect(container.querySelector('video')).toBeNull()
-    act(() => vi.advanceTimersByTime(10_000))
+    act(() => vi.advanceTimersByTime(1200))
+    act(() => vi.advanceTimersByTime(5000))
     expect(onEnded).toHaveBeenCalledTimes(1)
   })
 

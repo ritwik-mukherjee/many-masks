@@ -53,6 +53,19 @@ function setupInk(canvas: HTMLCanvasElement, source: HTMLCanvasElement): ((p: nu
   }
 }
 
+/** True when the source canvas holds no picture (nothing was drawn, e.g. a landing image that never loaded). */
+function isBlank(source: HTMLCanvasElement): boolean {
+  try {
+    const ctx = source.getContext('2d')
+    if (!ctx) return false
+    const { data } = ctx.getImageData(0, 0, Math.min(8, source.width || 8), Math.min(8, source.height || 8))
+    for (let i = 3; i < data.length; i += 4) if (data[i] !== 0) return false
+    return true
+  } catch {
+    return false
+  }
+}
+
 /**
  * The landing moment: the last swing frame inks over into comic art (900 ms), then crossfades into the
  * generated comic panel (400 ms). Without WebGL it uses a CSS filter instead; reduced motion just crossfades.
@@ -66,7 +79,8 @@ export default function ComicFreeze({ source, panelSrc, onDone, reducedMotion, a
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [mode, setMode] = useState<'gl' | 'css' | 'reduced'>(() => {
-    if (reducedMotion) return 'reduced'
+    // Reduced motion, or nothing to ink (a blank frame would ink to black): crossfade straight to the panel.
+    if (reducedMotion || isBlank(source)) return 'reduced'
     try {
       return document.createElement('canvas').getContext('webgl') ? 'gl' : 'css'
     } catch {

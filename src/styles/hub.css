@@ -49,3 +49,8 @@
 .route__district button:hover { color: var(--signal); }
 .route__district--finale button { color: var(--signal); font-weight: 600; }
 .route__visited { font-size: 12px; color: var(--signal); }
+.hub__details {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; margin: 0; padding: 6px 16px; list-style: none;
+  display: flex; flex-wrap: wrap; gap: 4px 20px; background: rgb(14 14 16 / 0.72); border-top: 2px solid var(--signal);
+  font-size: 14px; color: var(--signal);
+}

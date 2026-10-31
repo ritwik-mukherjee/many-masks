@@ -11,14 +11,14 @@ import VoiceKey from './VoiceKey'
 const SAFETY_MS = 15000
 
 /** A video step that always moves on: when it ends, errors, or never finishes. */
-function Clip({ src, onDone, lens = false }: { src: string; onDone: () => void; lens?: boolean }) {
+function Clip({ src, poster, onDone, lens = false }: { src: string; poster: string; onDone: () => void; lens?: boolean }) {
   useEffect(() => {
     const t = setTimeout(onDone, SAFETY_MS)
     return () => clearTimeout(t)
   }, [onDone])
   return (
     <>
-      <video className="fill" src={media(src)} autoPlay muted playsInline onEnded={onDone} onError={onDone} />
+      <video className="fill" src={media(src)} poster={media(poster)} autoPlay muted playsInline onEnded={onDone} onError={onDone} />
       {lens && <LensOverlay visible />}
     </>
   )
@@ -39,7 +39,7 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
 
   return (
     <section className={`finale finale--${step}`}>
-      {step === 'swing' && <Clip key="swing" src="vid/F01.mp4" onDone={next} lens />}
+      {step === 'swing' && <Clip key="swing" src="vid/F01.mp4" poster="img/H01.jpg" onDone={next} lens />}
 
       {step === 'face' && (
         <>
@@ -48,7 +48,7 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
         </>
       )}
 
-      {step === 'unmasking' && <Clip key="unmask" src="vid/F04.mp4" onDone={next} />}
+      {step === 'unmasking' && <Clip key="unmask" src="vid/F04.mp4" poster="img/F02.jpg" onDone={next} />}
 
       {step === 'reveal' && (
         <>
