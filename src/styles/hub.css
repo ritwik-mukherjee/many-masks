@@ -1,0 +1,51 @@
+/* Hub: the clickable skyline. */
+.hub { position: fixed; inset: 0; overflow: hidden; background: #1b120c; }
+.hub__world { position: absolute; transition: transform 600ms var(--ease-swing); will-change: transform; }
+.hub__img, .hub__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hub__spot {
+  fill: rgb(242 194 48 / 0); stroke: rgb(242 194 48 / 0); stroke-width: 6; cursor: pointer; outline: none;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+.hub__spot:hover, .hub__spot:focus-visible { fill: rgb(242 194 48 / 0.16); stroke: var(--signal); }
+.hub__spot.is-visited { stroke: rgb(242 232 207 / 0.35); stroke-dasharray: 18 12; }
+.hub__spot--wispr { fill: rgb(255 214 120 / 0.22); animation: wispr-glow 2.4s ease-in-out infinite; }
+@keyframes wispr-glow { 50% { fill: rgb(255 214 120 / 0.5); stroke: rgb(255 214 120 / 0.8); } }
+.hub__billboard { font-family: var(--f-display); font-size: 62px; fill: #1d1b1a; letter-spacing: 2px; pointer-events: none; }
+
+.hub__tip {
+  position: absolute; transform: translate(-50%, calc(-100% - 18px)); z-index: 3; pointer-events: none;
+  display: grid; gap: 2px; min-width: 14rem; max-width: 20rem;
+  background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
+  padding: 8px 12px; font-size: 15px; line-height: 1.3;
+}
+.hub__tip strong { font-family: var(--f-display); font-weight: 400; font-size: 22px; letter-spacing: 0.02em; }
+.hub__tip span { font-family: var(--f-caption); font-weight: 700; }
+
+.hub__head { position: absolute; left: 32px; top: 24px; z-index: 4; pointer-events: none; text-shadow: 0 2px 12px rgb(0 0 0 / 0.6); }
+.hub__title { margin: 0; font-family: var(--f-display); font-size: clamp(28px, 2.6vw, 40px); letter-spacing: 0.02em; }
+.hub__sub { margin: 0; font-size: 16px; opacity: 0.85; }
+
+.hub__ticker {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; margin: 0; overflow: hidden; white-space: nowrap;
+  background: rgb(14 14 16 / 0.72); border-top: 2px solid var(--signal); padding: 6px 0; font-size: 14px; color: var(--signal);
+}
+.hub__ticker span { display: inline-block; padding-left: 100%; animation: ticker 60s linear infinite; }
+@keyframes ticker { to { transform: translateX(-100%); } }
+
+/* Route map */
+.route {
+  position: absolute; right: 24px; top: 24px; z-index: 5; width: 18rem; max-height: calc(100vh - 96px); overflow: auto;
+  background: rgb(14 14 16 / 0.82); border: 2px solid rgb(242 232 207 / 0.3); backdrop-filter: blur(8px);
+}
+.route__toggle {
+  width: 100%; display: flex; justify-content: space-between; padding: 10px 14px; border: 0; background: transparent;
+  color: var(--cream); font-family: var(--f-display); font-size: 20px; letter-spacing: 0.04em;
+}
+.route__body { padding: 0 14px 12px; }
+.route__district h2 { margin: 10px 0 4px; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(242 232 207 / 0.55); }
+.route__district ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.route__district li { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.route__district button { border: 0; background: none; padding: 3px 0; color: var(--cream); text-align: left; font-size: 15px; }
+.route__district button:hover { color: var(--signal); }
+.route__district--finale button { color: var(--signal); font-weight: 600; }
+.route__visited { font-size: 12px; color: var(--signal); }
