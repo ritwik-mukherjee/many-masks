@@ -34,6 +34,14 @@ describe('journey', () => {
   test('BACK_TO_CITY returns to hub and clears current', () => {
     expect(journey(at({ phase: 'panel', current: 'B01' }), { type: 'BACK_TO_CITY' })).toMatchObject({ phase: 'hub', current: null })
   })
+  test('BACK_TO_CITY from the growth page returns to the hub and marks Wispr visited', () => {
+    const s = journey(at({ phase: 'finale', finale: 'growth', current: 'B13', visited: ['B01'] }), { type: 'BACK_TO_CITY' })
+    expect(s).toEqual({ phase: 'hub', current: null, finale: null, visited: ['B01', 'B13'] })
+  })
+  test('BACK_TO_CITY is ignored in the middle of the finale', () => {
+    const face = at({ phase: 'finale', finale: 'face', current: 'B13' })
+    expect(journey(face, { type: 'BACK_TO_CITY' })).toBe(face)
+  })
   test('CLICK_BUILDING from a panel swings to the next building', () => {
     expect(journey(at({ phase: 'panel', current: 'B01' }), { type: 'CLICK_BUILDING', id: 'B02' })).toMatchObject({ phase: 'swinging', current: 'B02' })
   })

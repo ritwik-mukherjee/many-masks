@@ -53,4 +53,11 @@ describe('Finale', () => {
     fireEvent.click(screen.getByRole('button', { name: 'How this was built' }))
     expect(screen.getByRole('dialog', { name: 'How this was built' })).toBeInTheDocument()
   })
+
+  test('growth offers a way back to the city', () => {
+    const dispatch = vi.fn()
+    render(<Finale state={at('growth')} dispatch={dispatch} audio={fakeAudio()} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Back to the city' }))
+    expect(dispatch).toHaveBeenCalledWith({ type: 'BACK_TO_CITY' })
+  })
 })

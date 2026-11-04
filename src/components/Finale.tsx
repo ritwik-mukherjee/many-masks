@@ -31,6 +31,11 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
   const wispr = buildingById('B13')
   const palo = buildingById('B04')
 
+  // Fetch the face while the mask is still on, so the crossfade never fades in to nothing.
+  useEffect(() => {
+    if (step === 'face' && typeof Image === 'function') new Image().src = media('img/F05.jpg')
+  }, [step])
+
   // The unmasking is a timed crossfade from the mask to the real face.
   useEffect(() => {
     if (step !== 'unmasking') return
@@ -91,7 +96,10 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
             <li><a href={links.github} target="_blank" rel="noreferrer">GitHub</a></li>
             {links.resume && <li><a href={links.resume} target="_blank" rel="noreferrer">Resume</a></li>}
           </ul>
-          <button type="button" className="finale__how" onClick={() => setHowOpen(true)}>How this was built</button>
+          <div className="finale__actions">
+            <button type="button" className="finale__how" onClick={() => setHowOpen(true)}>How this was built</button>
+            <button type="button" className="finale__how" onClick={() => { audio.sfx('whoosh'); dispatch({ type: 'BACK_TO_CITY' }) }}>Back to the city</button>
+          </div>
           {howOpen && <HowBuilt onClose={() => setHowOpen(false)} />}
         </div>
       )}

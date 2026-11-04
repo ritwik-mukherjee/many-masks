@@ -1,5 +1,8 @@
 /* Hub: the clickable skyline. */
 .hub { position: fixed; inset: 0; overflow: hidden; background: #1b120c; }
+/* Arriving in the city: the camera pulls back and the skyline comes up. Only the world moves, so the fixed UI stays put. */
+.hub__img, .hub__svg { animation: hub-arrive 800ms var(--ease-swing) both; transform-origin: 50% 55%; }
+@keyframes hub-arrive { from { transform: scale(1.16); filter: brightness(0.3) blur(8px); } to { transform: none; filter: none; } }
 .hub__world { position: absolute; transition: transform 600ms var(--ease-swing); will-change: transform; }
 .hub__img, .hub__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .hub__spot {

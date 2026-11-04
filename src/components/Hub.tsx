@@ -20,15 +20,23 @@ function useViewport() {
   return view
 }
 
+// Chrome ignores <link rel="preload" as="video">, so a held, detached video element does the warming.
+const warmed = new Map<string, HTMLVideoElement>()
+
 function preload(b: Building) {
-  if (!b.clip || typeof document === 'undefined') return
+  if (typeof document === 'undefined') return
+  if (typeof Image === 'function') {
+    new Image().src = media(b.landing)
+    new Image().src = media(b.panel)
+  }
+  if (!b.clip) return
   const href = media(b.clip)
-  if (document.head.querySelector(`link[href="${href}"]`)) return
-  const link = document.createElement('link')
-  link.rel = 'preload'
-  link.as = 'video'
-  link.href = href
-  document.head.appendChild(link)
+  if (warmed.has(href)) return
+  const video = document.createElement('video')
+  video.muted = true
+  video.preload = 'auto'
+  video.src = href
+  warmed.set(href, video)
 }
 
 const centroid = (pts: [number, number][]) => pts.reduce((a, p) => [a[0] + p[0] / pts.length, a[1] + p[1] / pts.length], [0, 0])

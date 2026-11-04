@@ -10,7 +10,7 @@ export default function RouteMap({ dispatch, visited, defaultOpen = true }: { di
   return (
     <nav className={`route${open ? ' route--open' : ''}`} aria-label="Route map">
       <button type="button" className="route__toggle" aria-expanded={open} onClick={() => setOpen(!open)}>
-        Route map <span aria-hidden="true">{visited.length}/12</span>
+        Route map <span aria-hidden="true">{visited.filter((id) => id !== 'B13').length}/12</span>
       </button>
       <div className="route__body" hidden={!open}>
         {ORDER.map((d) => (

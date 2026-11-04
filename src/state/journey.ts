@@ -47,7 +47,11 @@ export function journey(s: JourneyState, a: JourneyAction): JourneyState {
       if (s.phase !== 'freezing' || !s.current) return s
       return { ...s, phase: 'panel', visited: s.visited.includes(s.current) ? s.visited : [...s.visited, s.current] }
     case 'BACK_TO_CITY':
-      return s.phase === 'panel' ? { ...s, phase: 'hub', current: null } : s
+      if (s.phase === 'panel') return { ...s, phase: 'hub', current: null }
+      if (s.phase === 'finale' && s.finale === 'growth') {
+        return { ...s, phase: 'hub', current: null, finale: null, visited: s.visited.includes('B13') ? s.visited : [...s.visited, 'B13'] }
+      }
+      return s
     case 'FINALE_NEXT': {
       const next = s.phase === 'finale' && s.finale ? FINALE_ORDER[s.finale] : undefined
       return next ? { ...s, finale: next } : s
