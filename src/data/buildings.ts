@@ -62,11 +62,11 @@ export const buildings: Building[] = [
   },
   {
     id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...media('04'),
-    hook: "As the sun sets here, Palo's day starts.",
+    hook: "I opened Mumbai for a Bay Area startup. 4+ clients in month one.",
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
-    built: 'Go to market and sales systems for the Mumbai market entry of a San Francisco Bay Area startup, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
+    built: 'The Mumbai market entry for a San Francisco Bay Area startup: the go to market and the sales systems behind it, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
     proof: '4+ clients onboarded in the first month. Ad hoc outreach turned into a repeatable process.',
-    transcript: "At Palo I was the Mumbai face of a San Francisco Bay Area startup, working remotely across a twelve hour time difference. I built their Mumbai go-to-market, onboarded four plus clients in the first month, and turned ad hoc outreach into a process anyone could repeat. As the sun sets here, Palo's day starts.",
+    transcript: "At Palo I was the Mumbai face of a San Francisco Bay Area startup, working remotely across a twelve hour time difference. I built their Mumbai go-to-market and their sales systems, onboarded four plus clients in the first month, and turned ad hoc outreach into a process anyone could repeat. This is the job I want at Wispr: take a product built in San Francisco and make it win in India. As the sun sets here, Palo's day starts.",
   },
   {
     id: 'B05', name: 'The 220K billboard', district: 'growth', priority: 'S', ...media('05'),
@@ -124,11 +124,15 @@ export const buildings: Building[] = [
   },
   {
     id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'),
-    hook: 'Forward deployed: working inside the client.',
+    hook: 'I throw 33 Indian callers at voice agents to see what breaks.',
     hotspot: [[5.8, 28], [11.2, 27.5], [11.2, 42], [5.8, 42]],
-    built: 'Forward deployed engineer intern at a voice AI startup, from October 2026.',
-    proof: 'Public detail is limited by NDA.',
-    transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. Another mask.",
+    built: 'Forward deployed engineer intern at a voice AI startup, from October 2026, working with the cofounders. Building order confirmation and cart recovery dashboards and workflows for a D2C client.',
+    proof: '33 Indian edge case scenarios, 12 LLM judge checks, and code checks on every turn of every test call.',
+    more: [
+      { name: 'hollr-eval', note: 'Throws 33 realistic Indian callers at a voice agent: flirting, angry callers, "where did you get my number?", someone else picking up, Hinglish switches, interruptions, long silences, family chatter in the background. It scores every turn, suggests small prompt fixes, then re-tests to prove what got better and that nothing else broke.' },
+      { name: 'Agent builder', note: 'Turns a client intake into voice prompts, analysis prompts, runtime config and a setup sheet, so a new voice agent starts from the same blueprint.' },
+    ],
+    transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. I built a test rig that throws thirty three Indian callers at a voice agent: angry ones, flirting ones, Hinglish switches, family chatter in the background. Then it fixes the prompt and proves the fix worked. Another mask.",
   },
   {
     id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),

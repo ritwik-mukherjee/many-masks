@@ -39,3 +39,16 @@ test('a building with no extra projects shows no extra list', () => {
   render(<Panel building={buildingById('B04')} onBack={vi.fn()} audio={fakeAudio()} />)
   expect(screen.queryByText('Also on this line')).toBeNull()
 })
+
+test('HollrAI shows the eval and the agent builder, with no link to the private repo', () => {
+  render(<Panel building={buildingById('B11')} onBack={vi.fn()} audio={fakeAudio()} />)
+  expect(screen.getByText('hollr-eval')).toBeInTheDocument()
+  expect(screen.queryByRole('link', { name: 'hollr-eval' })).toBeNull()
+  expect(screen.getByText(/33 realistic Indian callers/)).toBeInTheDocument()
+})
+
+test('Palo leads with the market entry result', () => {
+  const b = buildingById('B04')
+  expect(b.proof).toContain('4+ clients onboarded in the first month')
+  expect(b.built).toContain('San Francisco Bay Area')
+})
