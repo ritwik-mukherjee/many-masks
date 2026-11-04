@@ -18,6 +18,8 @@ export interface Building {
   built: string
   proof: string
   cracked?: string
+  /** Related projects shown under the chapter. */
+  more?: { name: string; note: string; url?: string }[]
 }
 
 export const districtNames: Record<District, string> = {
@@ -92,12 +94,17 @@ export const buildings: Building[] = [
     transcript: 'Claude Build Day Mumbai. I went twice and won twice, the youngest winner both times. First, AI Game Director, a physical multiplayer game that Claude directs live, one of three winners out of about eighty builders. Then Ragdoll.AI, where your prompts rewrite the fighter mid-fight.',
   },
   {
-    id: 'B08', name: 'Sadie', district: 'builder', priority: 'M', ...media('08'),
-    hook: 'A voice agent that answers real phone calls.',
+    id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
+    hook: 'Voice agents that answer real calls, and a skill that gives Claude an ear.',
     hotspot: [[73.5, 54], [79.5, 54], [79.5, 73], [73.5, 73]],
-    built: 'A multi-tenant inbound voice agent over SIP or browser: real-time transcription, interruptions and five tools. Retargeted from an Indian sales persona to a US HVAC dispatcher with one new file. Plus an open source speech signals skill for Claude Code.',
+    built: 'Sadie: a multi-tenant inbound voice agent over SIP or browser, with real-time transcription, interruptions and five tools. Retargeted from an Indian sales persona to a US HVAC dispatcher with one new file.',
     proof: '3,186 lines of Python. Time to first token cut from 1.075s to 0.728s. 13 silent defects root caused.',
-    transcript: 'Sadie is a voice agent that answers real phone calls. Over three thousand lines of Python. I cut the time to first token from 1.075 seconds to 0.728, and tracked down thirteen bugs that never threw a single error. Turning it from an Indian sales agent into a US HVAC dispatcher took one new file. Another mask.',
+    more: [
+      { name: 'speech-signals', url: 'https://github.com/ritwik-mukherjee/speech-signals', note: 'Open source Claude Code skill that gives Claude an ear. It measures how you sounded from the waveform (fillers, restarts, pace, pauses, pitch, energy, trailing off), and every coaching note cites a timestamp. Nothing leaves your machine.' },
+      { name: 'Voice booking agent with an independent verifier', note: 'Retell, Make, Google Calendar and Maps. 67 tests and a script that recomputes every answer from the execution log, which caught silent defects like a calendar an hour out of timezone.' },
+      { name: 'Dental front desk voice demo', note: 'A browser voice agent for a fictional clinic, built on Pipecat, Deepgram, Groq and Silero: it books, reschedules and answers questions with a live transcript.' },
+    ],
+    transcript: 'Sadie is a voice agent that answers real phone calls. Over three thousand lines of Python. I cut the time to first token from 1.075 seconds to 0.728, and tracked down thirteen bugs that never threw a single error. Turning it from an Indian sales agent into a US HVAC dispatcher took one new file. Another mask. I also open sourced speech-signals, a skill that gives Claude an ear: it measures how you actually sounded, and every note cites a timestamp.',
   },
   {
     id: 'B09', name: 'GPU BenchLab', district: 'builder', priority: 'S', ...media('09'),

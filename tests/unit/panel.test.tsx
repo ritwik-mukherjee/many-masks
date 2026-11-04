@@ -27,3 +27,15 @@ test('a building with nothing cracked shows no cracked block', () => {
   render(<Panel building={buildingById('B04')} onBack={vi.fn()} audio={fakeAudio()} />)
   expect(screen.queryByText('What cracked')).toBeNull()
 })
+
+test('the voice building lists the rest of the voice work, with a link to speech-signals', () => {
+  render(<Panel building={buildingById('B08')} onBack={vi.fn()} audio={fakeAudio()} />)
+  expect(screen.getByRole('link', { name: 'speech-signals' })).toHaveAttribute('href', 'https://github.com/ritwik-mukherjee/speech-signals')
+  expect(screen.getByText('Voice booking agent with an independent verifier')).toBeInTheDocument()
+  expect(screen.getByText('Dental front desk voice demo')).toBeInTheDocument()
+})
+
+test('a building with no extra projects shows no extra list', () => {
+  render(<Panel building={buildingById('B04')} onBack={vi.fn()} audio={fakeAudio()} />)
+  expect(screen.queryByText('Also on this line')).toBeNull()
+})

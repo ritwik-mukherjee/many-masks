@@ -30,6 +30,19 @@ export default function Panel({ building, onBack, audio }: { building: Building;
             <p>{building.cracked}</p>
           </div>
         )}
+        {building.more && (
+          <div className="panel__block panel__more">
+            <h3>Also on this line</h3>
+            <ul>
+              {building.more.map((m) => (
+                <li key={m.name}>
+                  <strong>{m.url ? <a href={m.url} target="_blank" rel="noreferrer">{m.name}</a> : m.name}</strong>
+                  <p>{m.note}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <figure className="panel__voice">
           <figcaption>In my words</figcaption>
           <blockquote>{building.transcript}</blockquote>

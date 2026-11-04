@@ -128,3 +128,7 @@
 
 .finale__unmask { opacity: 0; animation: unmask 2s ease-in 0.15s forwards; }
 @keyframes unmask { 0% { opacity: 0; filter: brightness(2.4) blur(14px); } 100% { opacity: 1; filter: none; } }
+
+.panel__more ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 8px; }
+.panel__more li p { font-size: 15px; }
+.panel__more a { color: var(--maroon); }
