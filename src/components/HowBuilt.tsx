@@ -15,7 +15,7 @@ export default function HowBuilt({ onClose }: { onClose: () => void }) {
       <div className="howbuilt__card">
         <h2>How this was built</h2>
         <p>
-          I built this by talking: I spoke my instructions to Claude Code to design and build it, and to Emergent to ship
+          I built this by talking: I spoke most of my instructions to Claude Code to design and build it, and to Emergent to ship
           it, through Wispr Flow. The suit, the city and the swings were made with AI image and video tools, and I chose
           the takes. The comic panels are those same images, inked by a shader written for this site.
         </p>
