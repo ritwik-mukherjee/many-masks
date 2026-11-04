@@ -20,6 +20,16 @@ describe('LoadingScreen', () => {
   })
 })
 
+describe('LoadingScreen opening moment', () => {
+  test('the cable and both lenses sit in the same world as the poster, hidden from assistive tech', () => {
+    const { container } = render(<LoadingScreen audio={fakeAudio()} dispatch={vi.fn()} />)
+    const world = container.querySelector('.loading__world')!
+    expect(world.querySelector('img.loading__poster')).not.toBeNull()
+    expect(world.querySelector('svg.loading__cable')?.getAttribute('aria-hidden')).toBe('true')
+    expect(world.querySelectorAll('.loading__lens')).toHaveLength(2)
+  })
+})
+
 describe('Intro', () => {
   test('plays O02 and moves on when it ends', () => {
     const dispatch = vi.fn()
