@@ -32,7 +32,7 @@ export default function Panel({ building, onBack, audio }: { building: Building;
         )}
         {building.more && (
           <div className="panel__block panel__more">
-            <h3>Also on this line</h3>
+            <h3>{building.moreTitle ?? 'Also on this line'}</h3>
             <ul>
               {building.more.map((m) => (
                 <li key={m.name}>

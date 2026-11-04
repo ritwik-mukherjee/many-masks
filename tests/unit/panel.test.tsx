@@ -36,7 +36,7 @@ test('the voice building lists the rest of the voice work, with a link to speech
 })
 
 test('a building with no extra projects shows no extra list', () => {
-  render(<Panel building={buildingById('B04')} onBack={vi.fn()} audio={fakeAudio()} />)
+  render(<Panel building={buildingById('B01')} onBack={vi.fn()} audio={fakeAudio()} />)
   expect(screen.queryByText('Also on this line')).toBeNull()
 })
 
@@ -47,8 +47,12 @@ test('HollrAI shows the eval and the agent builder, with no link to the private 
   expect(screen.getByText(/33 realistic Indian callers/)).toBeInTheDocument()
 })
 
-test('Palo leads with the market entry result', () => {
+test('Palo shows the real GTM steps under its own heading, and marks the playbook as proposed', () => {
   const b = buildingById('B04')
-  expect(b.proof).toContain('4+ clients onboarded in the first month')
-  expect(b.built).toContain('San Francisco Bay Area')
+  expect(b.proof).toContain('4 creators')
+  render(<Panel building={b} onBack={vi.fn()} audio={fakeAudio()} />)
+  expect(screen.getByText('How I did it')).toBeInTheDocument()
+  expect(screen.getByText('Who I went after')).toBeInTheDocument()
+  expect(screen.getByText(/Discover, research, qualify, outreach, follow up, demo, onboard/)).toBeInTheDocument()
+  expect(screen.getByText(/proposed/i)).toBeInTheDocument()
 })

@@ -18,7 +18,9 @@ export interface Building {
   built: string
   proof: string
   cracked?: string
-  /** Related projects shown under the chapter. */
+  /** Heading for the extra list; defaults to 'Also on this line'. */
+  moreTitle?: string
+  /** Related projects or steps shown under the chapter. */
   more?: { name: string; note: string; url?: string }[]
 }
 
@@ -62,11 +64,19 @@ export const buildings: Building[] = [
   },
   {
     id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...media('04'),
-    hook: "I opened Mumbai for a Bay Area startup. 4+ clients in month one.",
+    hook: 'Four Mumbai creators onboarded for a Bay Area startup, one researched DM at a time.',
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
-    built: 'The Mumbai market entry for a San Francisco Bay Area startup: the go to market and the sales systems behind it, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
-    proof: '4+ clients onboarded in the first month. Ad hoc outreach turned into a repeatable process.',
-    transcript: "At Palo I was the Mumbai face of a San Francisco Bay Area startup, working remotely across a twelve hour time difference. I built their Mumbai go-to-market and their sales systems, onboarded four plus clients in the first month, and turned ad hoc outreach into a process anyone could repeat. This is the job I want at Wispr: take a product built in San Francisco and make it win in India. As the sun sets here, Palo's day starts.",
+    built: 'The Mumbai market entry for Palo, an AI creator intelligence platform from the San Francisco Bay Area: the go to market and the sales systems behind it, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
+    proof: 'Helped onboard 4 creators in the first month, giving Palo its foothold in Mumbai\'s fitness and wellness niche. Ad hoc outreach turned into a repeatable process.',
+    moreTitle: 'How I did it',
+    more: [
+      { name: 'Who I went after', note: 'Mumbai fitness and wellness creators, because they publish on a recurring cycle. I found them on Instagram through niche hashtags, location tags and fitness communities, and qualified on publishing consistency and a real workflow problem, not follower count.' },
+      { name: 'The first message', note: 'An Instagram DM built the same way every time: a personalised opening, an observation about their content, the opportunity, Palo, a call to action. The goal was a product conversation, not a sale.' },
+      { name: 'The conversation', note: 'Consultative, not a pitch. I asked how they made content, found whether they were stuck on ideation, consistency, research or performance, showed only the features for that problem, then helped them connect their account.' },
+      { name: 'The repeatable part', note: 'Discover, research, qualify, outreach, follow up, demo, onboard. A spreadsheet tracked outreach, interest, follow up, demo and onboarding for every creator, and each conversation fed back which features and objections came up.' },
+      { name: 'The playbook I wrote to scale it', note: 'Proposed next steps, not results yet: a weighted ICP score across workflow complexity, monetisation, traction, data access, need and decision maker access; a 30 day market entry plan; tracked funnel events; and one positioning thesis: not another AI content tool, but an intelligent operating layer for a creator\'s whole content operation.' },
+    ],
+    transcript: "At Palo I was the Mumbai face of a San Francisco Bay Area startup, working remotely across a twelve hour time difference. I went after fitness and wellness creators on Instagram, because they publish all the time. I picked them on consistency, not followers, sent every one a researched DM, and asked about their workflow before I showed them anything. That helped onboard four creators in the first month, and it turned ad hoc outreach into a process anyone could repeat. This is the job I want at Wispr: take a product built in San Francisco and make it win in India. As the sun sets here, Palo's day starts.",
   },
   {
     id: 'B05', name: 'The 220K billboard', district: 'growth', priority: 'S', ...media('05'),
