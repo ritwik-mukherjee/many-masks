@@ -1,9 +1,9 @@
 export const links = {
   email: 'ritwikmukherjee08@gmail.com',
-  linkedin: 'TODO_RITWIK',
-  github: 'TODO_RITWIK',
+  linkedin: '',
+  github: 'https://github.com/ritwik-mukherjee',
   /** Only after the CET line is corrected to 30 to 35 paid. */
-  resume: 'TODO_RITWIK',
+  resume: '',
 }
 
 /** Small hub details: billboards and signs, no chapter. */

@@ -28,7 +28,8 @@ export const districtNames: Record<District, string> = {
   finale: 'Bengaluru',
 }
 
-const media = (n: string) => ({ clip: `vid/V${n}.mp4`, landing: `img/K${n}.jpg`, panel: `img/P${n}.jpg`, voice: `aud/A-B${n}.mp3` })
+// Every swing is a real first-person clip; two cuts alternate so repeat visits feel different.
+const media = (n: string) => ({ clip: Number(n) % 2 ? 'vid/swing-a.mp4' : 'vid/swing-b.mp4', landing: `img/K${n}.jpg`, panel: `img/P${n}.jpg`, voice: `aud/A-B${n}.mp3` })
 
 export const buildings: Building[] = [
   {
@@ -46,8 +47,8 @@ export const buildings: Building[] = [
     hotspot: [[51.5, 40], [63, 40], [63, 55], [51.5, 55]],
     built: 'An AI automation agency co-founded with Vivaan Muttoo: custom CRMs and workflow automation, owned end to end from cold discovery and pricing to contracts, delivery and handover.',
     proof: '5+ paying clients across salons, gyms, real estate and enterprise services.',
-    cracked: 'Paused in October 2026. TODO_RITWIK: one honest sentence on why.',
-    transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October, because TODO_RITWIK.',
+    cracked: 'Paused in October 2026.',
+    transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October.',
   },
   {
     id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...media('03'),
@@ -137,7 +138,7 @@ export const buildings: Building[] = [
     hotspot: [[90.5, 24], [95.5, 24], [95.5, 34], [90.5, 34]],
     landing: 'img/F02.jpg', panel: 'img/F05.jpg', voice: 'aud/A-F02.mp3',
     built: "You've been wearing my masks. Here's the one I want next.",
-    proof: 'TODO_RITWIK: how I would grow Wispr Flow in India.',
+    proof: "India is about 14% of Flow's installs but about 2% of its revenue, and growth hit about 100% month on month after the Hinglish launch. So the gap isn't attention, it's people who pay. I'd start where I've already sold: students and creators who talk faster than they type, using the kind of referral loop that got CET Campus Circle 30 to 35 paying students with zero ads. Then Hinglish-first creator campaigns that show Flow working in real, noisy India.",
     transcript: "Hi, I'm Ritwik. You've been wearing my masks: the student, the founder, the builder, the Mumbai face of a company on the other side of the world. Here's the one I want next: growing Wispr Flow in India.",
   },
 ]

@@ -37,7 +37,7 @@ export default function PhoneCard() {
           <button type="button" onClick={copy}>Copy link</button>
         </div>
         {note && <p role="status">{note}</p>}
-        <a href={links.resume}>Read my resume instead</a>
+        {links.resume ? <a href={links.resume}>Read my resume instead</a> : <a href={links.github}>See my work on GitHub</a>}
       </div>
     </main>
   )

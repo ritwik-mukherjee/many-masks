@@ -31,6 +31,13 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
   const wispr = buildingById('B13')
   const palo = buildingById('B04')
 
+  // The unmasking is a timed crossfade from the mask to the real face.
+  useEffect(() => {
+    if (step !== 'unmasking') return
+    const t = setTimeout(next, 2200)
+    return () => clearTimeout(t)
+  }, [step]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     if (step === 'swing') audio.sfx('fire')
     if (step === 'face') audio.voice(media('aud/A-F01.mp3'))
@@ -39,20 +46,25 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
 
   return (
     <section className={`finale finale--${step}`}>
-      {step === 'swing' && <Clip key="swing" src="vid/F01.mp4" poster="img/H01.jpg" onDone={next} lens />}
+      {step === 'swing' && <Clip key="swing" src="vid/F01.mp4" poster="img/O03.jpg" onDone={next} lens />}
 
       {step === 'face' && (
         <>
-          <img className="fill finale__still" src={media('img/F02.jpg')} alt="The masked hero standing on top of a tower at night, facing you, Bengaluru behind him" />
+          <img className="fill finale__still" src={media('img/F02.jpg')} alt="The masked hero in the maroon jacket, yellow goggles and cream face wrap, on a Mumbai rooftop, facing you" />
           <VoiceKey onUnmask={() => { audio.stopVoice(); dispatch({ type: 'UNMASK' }) }} />
         </>
       )}
 
-      {step === 'unmasking' && <Clip key="unmask" src="vid/F04.mp4" poster="img/F02.jpg" onDone={next} />}
+      {step === 'unmasking' && (
+        <>
+          <img className="fill finale__still" src={media('img/F02.jpg')} alt="" />
+          <img className="fill finale__unmask" src={media('img/F05.jpg')} alt="" />
+        </>
+      )}
 
       {step === 'reveal' && (
         <>
-          <img className="fill finale__still" src={media('img/F05.jpg')} alt="Ritwik Mukherjee, hood down, goggles pushed up, on top of the tower at night" />
+          <img className="fill finale__still" src={media('img/F05.jpg')} alt="Ritwik Mukherjee" />
           <div className="finale__reveal">
             <p className="finale__line">{wispr.built}</p>
             <p className="finale__transcript">{wispr.transcript}</p>
@@ -75,9 +87,9 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
           </div>
           <ul className="finale__links">
             <li><a href={`mailto:${links.email}`}>{links.email}</a></li>
-            <li><a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>
+            {links.linkedin && <li><a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>}
             <li><a href={links.github} target="_blank" rel="noreferrer">GitHub</a></li>
-            <li><a href={links.resume} target="_blank" rel="noreferrer">Resume</a></li>
+            {links.resume && <li><a href={links.resume} target="_blank" rel="noreferrer">Resume</a></li>}
           </ul>
           <button type="button" className="finale__how" onClick={() => setHowOpen(true)}>How this was built</button>
           {howOpen && <HowBuilt onClose={() => setHowOpen(false)} />}

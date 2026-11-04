@@ -63,6 +63,7 @@ describe('Important 2 and 9: swings cannot hang, and a ready clip is not cut', (
     fireEvent.loadedMetadata(v)
     fireEvent.canPlay(v)
     act(() => vi.advanceTimersByTime(7000))
+    act(() => vi.advanceTimersByTime(3000))
     expect(onEnded).toHaveBeenCalledTimes(1)
   })
 
@@ -90,10 +91,11 @@ describe('Important 4: no black screens while video loads', () => {
     opening.unmount()
     const at = (finale: 'swing' | 'unmasking') => ({ ...initialJourney, phase: 'finale' as const, current: 'B13' as const, finale })
     const f1 = render(<Finale state={at('swing')} dispatch={vi.fn()} audio={fakeAudio()} />)
-    expect(f1.container.querySelector('video')!.getAttribute('poster')).toContain('img/H01.jpg')
+    expect(f1.container.querySelector('video')!.getAttribute('poster')).toContain('img/O03.jpg')
     f1.unmount()
     const f4 = render(<Finale state={at('unmasking')} dispatch={vi.fn()} audio={fakeAudio()} />)
-    expect(f4.container.querySelector('video')!.getAttribute('poster')).toContain('img/F02.jpg')
+    expect(f4.container.querySelector('img[src*="img/F02.jpg"]')).not.toBeNull()
+    expect(f4.container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
   })
 })
 

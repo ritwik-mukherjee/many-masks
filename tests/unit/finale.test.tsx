@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, test, vi } from 'vitest'
 import Finale from '../../src/components/Finale'
 import { links } from '../../src/data/links'
@@ -28,13 +28,14 @@ describe('Finale', () => {
     expect(dispatch).toHaveBeenCalledWith({ type: 'UNMASK' })
   })
 
-  test('unmasking plays F04 and moves on', () => {
+  test('unmasking crossfades from the mask to the face and moves on', () => {
+    vi.useFakeTimers()
     const dispatch = vi.fn()
     const { container } = render(<Finale state={at('unmasking')} dispatch={dispatch} audio={fakeAudio()} />)
-    const v = container.querySelector('video')!
-    expect(v.getAttribute('src')).toContain('vid/F04.mp4')
-    fireEvent.ended(v)
+    expect(container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
+    act(() => vi.advanceTimersByTime(2200))
     expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
+    vi.useRealTimers()
   })
 
   test('reveal holds F05, plays the line, and shows the twist', () => {
@@ -48,9 +49,7 @@ describe('Finale', () => {
   test('growth shows the contact links and opens How this was built', () => {
     render(<Finale state={at('growth')} dispatch={vi.fn()} audio={fakeAudio()} />)
     expect(screen.getByRole('link', { name: links.email })).toHaveAttribute('href', `mailto:${links.email}`)
-    expect(screen.getByRole('link', { name: 'LinkedIn' })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'GitHub' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Resume' })).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: 'How this was built' }))
     expect(screen.getByRole('dialog', { name: 'How this was built' })).toBeInTheDocument()
   })

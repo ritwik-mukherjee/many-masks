@@ -18,7 +18,7 @@ describe('PhoneCard', () => {
     const img = screen.getByRole('img')
     expect(img.getAttribute('alt')).toBeTruthy()
     expect(screen.getByRole('button', { name: 'Copy link' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /resume/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /resume|github/i })).toBeInTheDocument()
   })
 
   test('copy link without a clipboard API does not throw and tells the visitor', () => {

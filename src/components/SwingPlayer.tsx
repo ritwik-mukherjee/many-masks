@@ -65,7 +65,7 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
     const clear = () => clearTimeout(stall)
     const arm = () => {
       if (!v || !Number.isFinite(v.duration) || deadline) return
-      deadline = setTimeout(() => finish(v), v.duration * 1000 + DEADLINE_PAD_MS)
+      deadline = setTimeout(() => setMode('landed'), v.duration * 1000 + DEADLINE_PAD_MS)
     }
     if (v && v.readyState >= 3) clear()
     v?.addEventListener('canplay', clear, { once: true })
@@ -106,7 +106,7 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
           autoPlay
           muted
           playsInline
-          onEnded={(e) => finish(e.currentTarget)}
+          onEnded={() => setMode('landed')}
           onError={() => setMode('push')}
         />
       )}

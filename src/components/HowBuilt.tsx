@@ -15,11 +15,10 @@ export default function HowBuilt({ onClose }: { onClose: () => void }) {
       <div className="howbuilt__card">
         <h2>How this was built</h2>
         <p>
-          I built this by talking. Every instruction I gave Claude Code to design and build it, and Emergent to ship it,
-          went through Wispr Flow. The suit, the city and every swing were made with AI image and video tools, and I
-          chose every take.
+          I built this by talking: I spoke my instructions to Claude Code to design and build it, and to Emergent to ship
+          it, through Wispr Flow. The suit, the city and the swings were made with AI image and video tools, and I chose
+          the takes. The comic panels are those same images, inked by a shader written for this site.
         </p>
-        <p className="howbuilt__todo">TODO_RITWIK: Flow stats screenshot and two short dictation clips.</p>
         <button type="button" className="cta" onClick={onClose}>Close</button>
       </div>
     </div>
