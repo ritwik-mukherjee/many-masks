@@ -4,15 +4,29 @@ import SwingPlayer from '../../src/components/SwingPlayer'
 import { buildingById } from '../../src/data/buildings'
 
 const cet = buildingById('B01')
+const shared = buildingById('B03')
 const noClip = { ...buildingById('B03'), clip: undefined }
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 
 describe('SwingPlayer', () => {
-  test('plays the clip muted with CORS and ends once', () => {
+  test.each([['B01', 'V01'], ['B02', 'V02'], ['B04', 'V04'], ['B07', 'V07']] as const)('%s plays its own swing and freezes on its last frame', (id, clip) => {
     const onEnded = vi.fn()
-    const { container } = render(<SwingPlayer building={cet} onEnded={onEnded} reducedMotion={false} />)
+    const { container } = render(<SwingPlayer building={buildingById(id)} onEnded={onEnded} reducedMotion={false} />)
+    const video = container.querySelector('video')!
+    expect(video.getAttribute('src')).toContain(`vid/${clip}.mp4`)
+    fireEvent.canPlay(video)
+    fireEvent.ended(video)
+    expect(onEnded).toHaveBeenCalledTimes(1)
+    expect(container.querySelector('img.swing__landing')).toBeNull()
+    act(() => vi.advanceTimersByTime(10_000))
+    expect(onEnded).toHaveBeenCalledTimes(1)
+  })
+
+  test('a building on a shared clip plays it muted with CORS, lands on its still and ends once', () => {
+    const onEnded = vi.fn()
+    const { container } = render(<SwingPlayer building={shared} onEnded={onEnded} reducedMotion={false} />)
     const video = container.querySelector('video')!
     expect(video.getAttribute('src')).toContain('vid/swing-a.mp4')
     expect(video.getAttribute('crossorigin')).toBe('anonymous')

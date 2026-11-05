@@ -108,7 +108,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
   if (reducedMotion) {
     return (
       <section className="opening opening--stepped">
-        <img className="fill" src={media('img/P00.jpg')} alt="Comic panel: the masked hero landing on a college terrace at sunrise" />
+        <img className="fill" src={media('img/P00.jpg')} alt="Comic panel: an empty college terrace at sunrise, looking out over the city" />
         <ol className="opening__steps">
           {openingBeats.map((b) => (
             <li key={b.text}><span className="caption">{b.text}</span></li>
@@ -123,7 +123,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
   const beat = openingBeats.find((b) => progress >= b.from && progress < b.to) ?? openingBeats.at(-1)!
 
   return (
-    <section ref={sectionRef} className="opening" style={{ height: '600vh' }}>
+    <section ref={sectionRef} className="opening" style={{ height: '900vh' }}>
       <div className="opening__stage">
         <video ref={videoRef} className="fill" src={media('vid/opening.mp4')} poster={media('img/O03.jpg')} muted playsInline preload="auto" crossOrigin="anonymous" />
         {frame && <ComicFreeze source={frame} panelSrc="img/P00.jpg" audio={audio} reducedMotion={false} onDone={() => {}} />}

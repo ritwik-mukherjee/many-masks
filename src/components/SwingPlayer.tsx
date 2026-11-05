@@ -106,7 +106,7 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
           autoPlay
           muted
           playsInline
-          onEnded={() => setMode('landed')}
+          onEnded={() => { if (building.landsOnClip) finish(videoRef.current ?? undefined); else setMode('landed') }}
           onError={() => setMode('push')}
         />
       )}

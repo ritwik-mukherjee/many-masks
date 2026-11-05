@@ -11,6 +11,8 @@ export interface Building {
   priority: 'M' | 'S'
   /** 'vid/V01.mp4'; absent means the 2.5D push-in fallback. */
   clip?: string
+  /** The clip was shot for this building, so the comic freeze starts from its last frame rather than the landing still. */
+  landsOnClip?: boolean
   landing: string
   panel: string
   voice: string
@@ -32,12 +34,14 @@ export const districtNames: Record<District, string> = {
   finale: 'Bengaluru',
 }
 
-// Every swing is a real first-person clip; two cuts alternate so repeat visits feel different.
+// Every swing is a real first-person clip; two shared cuts alternate so repeat visits feel different.
 const media = (n: string) => ({ clip: Number(n) % 2 ? 'vid/swing-a.mp4' : 'vid/swing-b.mp4', landing: `img/K${n}.jpg`, panel: `img/P${n}.jpg`, voice: `aud/A-B${n}.mp3` })
+// The main chapters have a swing of their own, shot from the hub view to that building's roof.
+const ownSwing = (n: string) => ({ ...media(n), clip: `vid/V${n}.mp4`, landsOnClip: true })
 
 export const buildings: Building[] = [
   {
-    id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...media('01'),
+    id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...ownSwing('01'),
     hook: 'The tallest thing I built. Admissions advisory, zero ads.',
     hotspot: [[23.4, 5], [29.2, 4], [29.5, 40], [23.4, 40]],
     built: 'A paid admissions advisory for the Maharashtra CAP rounds, plus a Python pipeline that reads a 1,580 page cutoff PDF and turns it into ranked, risk banded recommendations in minutes.',
@@ -46,7 +50,7 @@ export const buildings: Building[] = [
     transcript: "CET Campus Circle is my admissions advisory for the Maharashtra CAP rounds. We grew a free community of over 150 students from Reddit, and 30 to 35 of them paid, with zero ads. I wrote a pipeline that reads a 1,580 page cutoff PDF, so every student got ranked options in minutes, not hours. The hardest call: one student wasn't happy, my co-founders didn't agree on a refund, so I paid it back in full from my own share.",
   },
   {
-    id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...media('02'),
+    id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...ownSwing('02'),
     hook: 'An AI agency. The lights went out in October.',
     hotspot: [[51.5, 40], [63, 40], [63, 55], [51.5, 55]],
     built: 'An AI automation agency co-founded with Vivaan Muttoo: custom CRMs and workflow automation, owned end to end from cold discovery and pricing to contracts, delivery and handover.',
@@ -63,7 +67,7 @@ export const buildings: Building[] = [
     transcript: 'Before any of the tech, there was a food stall. The Fusion Street. We did over ten thousand rupees in sales in a single day. Nothing teaches you selling like a walk-in customer who can just keep walking.',
   },
   {
-    id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...media('04'),
+    id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...ownSwing('04'),
     hook: 'Four Mumbai creators onboarded for a Bay Area startup, one researched DM at a time.',
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
     built: 'The Mumbai market entry for Palo, an AI creator intelligence platform from the San Francisco Bay Area: the go to market and the sales systems behind it, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
@@ -96,7 +100,7 @@ export const buildings: Building[] = [
     transcript: 'Over four days of my holidays, I ran six plus sessions for fifty plus residents of Wagle Estate, teaching them Claude. Sixteen hours. Honestly, I nearly gave up, because getting people to show up was the hardest part. Some of them now build websites for local businesses.',
   },
   {
-    id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...media('07'),
+    id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...ownSwing('07'),
     hook: 'Went twice. Won twice. Youngest both times.',
     hotspot: [[38, 23], [50, 23], [50, 42], [38, 42]],
     built: 'AI Game Director: a physical multiplayer game that Claude directs live through safe, structured events. Ragdoll.AI: a browser physics fighter where typed prompts mutate the fighter.',
