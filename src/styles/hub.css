@@ -1,5 +1,6 @@
 /* Hub: the clickable skyline. */
-.hub { position: fixed; inset: 0; overflow: hidden; background: #1b120c; }
+/* clip, not hidden: the slightly oversized world must never be scrolled by focus moving to an edge building. */
+.hub { position: fixed; inset: 0; overflow: clip; background: #1b120c; }
 /* Arriving in the city: the camera pulls back and the skyline comes up. Only the world moves, so the fixed UI stays put. */
 .hub__img, .hub__svg { animation: hub-arrive 800ms var(--ease-swing) both; transform-origin: 50% 55%; }
 @keyframes hub-arrive { from { transform: scale(1.16); filter: brightness(0.3) blur(8px); } to { transform: none; filter: none; } }
@@ -9,18 +10,42 @@
   fill: rgb(242 194 48 / 0); stroke: rgb(242 194 48 / 0); stroke-width: 6; cursor: pointer; outline: none;
   transition: fill 160ms ease, stroke 160ms ease;
 }
-.hub__spot:hover, .hub__spot:focus-visible { fill: rgb(242 194 48 / 0.16); stroke: var(--signal); }
+.hub__spot:hover, .hub__spot:focus-visible, .hub__spot.is-hot { fill: rgb(242 194 48 / 0.16); stroke: var(--signal); }
 .hub__spot.is-visited { stroke: rgb(242 232 207 / 0.35); stroke-dasharray: 18 12; }
 .hub__spot--wispr { fill: rgb(255 214 120 / 0.22); animation: wispr-glow 2.4s ease-in-out infinite; }
 @keyframes wispr-glow { 50% { fill: rgb(255 214 120 / 0.5); stroke: rgb(255 214 120 / 0.8); } }
 .hub__billboard { font-family: var(--f-display); font-size: 62px; fill: #1d1b1a; letter-spacing: 2px; pointer-events: none; }
 
+/* Name tags: comic captions pinned to the rooflines, each with a tail pointing at its building. */
+.hub__markers { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.hub__marker {
+  --tail: 50%;
+  position: absolute; transform: translate(calc(var(--tail) * -1), calc(-100% - 9px)); pointer-events: auto; white-space: nowrap;
+  border: 2px solid var(--ink); background: var(--cream); color: var(--ink); box-shadow: 3px 3px 0 var(--ink);
+  padding: 2px 8px; font-family: var(--f-display); font-size: clamp(12px, 1.02vw, 18px); line-height: 1.25; letter-spacing: 0.03em;
+  cursor: pointer; animation: marker-pop 280ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  transition: background 120ms ease, color 120ms ease;
+}
+.hub__marker::after {
+  content: ''; position: absolute; left: var(--tail); top: 100%; margin-left: -6px; width: 0; height: 0;
+  border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 9px solid var(--ink);
+}
+.hub__marker--end { --tail: 92%; }
+.hub__marker.is-visited { background: rgb(201 194 174); color: rgb(14 14 16 / 0.72); }
+.hub__marker.is-visited::before { content: '\2713\00a0'; }
+.hub__marker--wispr { background: var(--signal); animation: marker-pop 280ms cubic-bezier(0.2, 1.4, 0.4, 1) both, marker-glow 2.4s ease-in-out 1.4s infinite; }
+.hub__marker.is-hot, .hub__marker:hover { background: var(--signal); color: var(--ink); z-index: 1; }
+@keyframes marker-pop { from { opacity: 0; scale: 0.6; } to { opacity: 1; scale: 1; } }
+@keyframes marker-glow { 50% { box-shadow: 3px 3px 0 var(--ink), 0 0 18px 4px rgb(255 214 120 / 0.75); } }
+
 .hub__tip {
-  position: absolute; transform: translate(-50%, calc(-100% - 18px)); z-index: 3; pointer-events: none;
+  position: absolute; transform: translate(-50%, calc(-100% - 46px)); z-index: 3; pointer-events: none;
   display: grid; gap: 2px; min-width: 14rem; max-width: 20rem;
   background: var(--cream); color: var(--ink); border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink);
   padding: 8px 12px; font-size: 15px; line-height: 1.3;
 }
+.hub__tip--below { transform: translate(-50%, 14px); }
+.hub__tip--end { transform: translate(-92%, 14px); }
 .hub__tip strong { font-family: var(--f-display); font-weight: 400; font-size: 22px; letter-spacing: 0.02em; }
 .hub__tip span { font-family: var(--f-caption); font-weight: 700; }
 

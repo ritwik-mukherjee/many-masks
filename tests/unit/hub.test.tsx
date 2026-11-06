@@ -36,6 +36,51 @@ describe('Hub', () => {
     made.mockRestore()
   })
 
+  describe('markers', () => {
+    const tags = (c: HTMLElement) => [...c.querySelectorAll<HTMLButtonElement>('.hub__marker')]
+
+    test('every building has a named tag, without the screen reader hearing each building twice', () => {
+      const { container } = render(<Hub dispatch={vi.fn()} visited={[]} />)
+      expect(tags(container).map((t) => t.textContent)).toEqual(buildings.map((b) => b.marker.label))
+      expect(container.querySelector('.hub__markers')).toHaveAttribute('aria-hidden', 'true')
+      expect(tags(container).every((t) => t.tabIndex === -1)).toBe(true)
+      expect(within(screen.getByTestId('hotspots')).getAllByRole('button')).toHaveLength(13)
+    })
+
+    test('clicking a tag swings to that building', () => {
+      const dispatch = vi.fn()
+      const { container } = render(<Hub dispatch={dispatch} visited={[]} />)
+      fireEvent.click(tags(container)[3])
+      expect(dispatch).toHaveBeenCalledWith({ type: 'CLICK_BUILDING', id: 'B04' })
+    })
+
+    test('hovering a tag shows the full name and hook and lights the building', () => {
+      const { container } = render(<Hub dispatch={vi.fn()} visited={[]} />)
+      fireEvent.mouseEnter(tags(container)[7])
+      const tip = container.querySelector('.hub__tip')!
+      expect(tip).toHaveTextContent(buildings[7].name)
+      expect(tip).toHaveTextContent(buildings[7].hook)
+      expect(within(screen.getByTestId('hotspots')).getByRole('button', { name: buildings[7].name })).toHaveClass('is-hot')
+    })
+
+    test('visited buildings are marked, and Wispr stands out', () => {
+      const { container } = render(<Hub dispatch={vi.fn()} visited={['B02']} />)
+      expect(tags(container)[1]).toHaveClass('is-visited')
+      expect(tags(container)[0]).not.toHaveClass('is-visited')
+      expect(tags(container)[12]).toHaveClass('hub__marker--wispr')
+    })
+
+    test('tags sit inside the image', () => {
+      for (const b of buildings) {
+        const [x, y] = b.marker.at
+        expect(x).toBeGreaterThan(0)
+        expect(x).toBeLessThan(100)
+        expect(y).toBeGreaterThan(0)
+        expect(y).toBeLessThan(100)
+      }
+    })
+  })
+
   test('Enter on a focused hotspot swings there', () => {
     const dispatch = vi.fn()
     render(<Hub dispatch={dispatch} visited={[]} />)

@@ -39,8 +39,6 @@ function preload(b: Building) {
   warmed.set(href, video)
 }
 
-const centroid = (pts: [number, number][]) => pts.reduce((a, p) => [a[0] + p[0] / pts.length, a[1] + p[1] / pts.length], [0, 0])
-
 export default function Hub({ dispatch, visited, reducedMotion = false }: { dispatch: Dispatch<JourneyAction>; visited: BuildingId[]; reducedMotion?: boolean }) {
   const view = useViewport()
   const { scale, offsetX, offsetY } = coverTransform(IMG, view)
@@ -49,7 +47,6 @@ export default function Hub({ dispatch, visited, reducedMotion = false }: { disp
 
   const go = (b: Building) => dispatch({ type: 'CLICK_BUILDING', id: b.id })
   const box = { left: offsetX, top: offsetY, width: IMG.w * scale, height: IMG.h * scale }
-  const tip = hovered ? centroid(hovered.hotspot) : null
 
   return (
     <section
@@ -66,7 +63,7 @@ export default function Hub({ dispatch, visited, reducedMotion = false }: { disp
               role="button"
               tabIndex={0}
               aria-label={b.name}
-              className={`hub__spot${b.id === 'B13' ? ' hub__spot--wispr' : ''}${visited.includes(b.id) ? ' is-visited' : ''}`}
+              className={`hub__spot${b.id === 'B13' ? ' hub__spot--wispr' : ''}${visited.includes(b.id) ? ' is-visited' : ''}${hovered?.id === b.id ? ' is-hot' : ''}`}
               points={b.hotspot.map(([x, y]) => `${(x / 100) * IMG.w},${(y / 100) * IMG.h}`).join(' ')}
               onMouseEnter={() => { setHovered(b); preload(b) }}
               onMouseLeave={() => setHovered(null)}
@@ -77,8 +74,28 @@ export default function Hub({ dispatch, visited, reducedMotion = false }: { disp
             />
           ))}
         </svg>
-        {hovered && tip && (
-          <div className="hub__tip" style={{ left: `${tip[0]}%`, top: `${tip[1]}%` }}>
+        {/* The polygons already carry each name for keyboards and screen readers, so the tags are for the eye and the mouse. */}
+        <div className="hub__markers" aria-hidden="true">
+          {buildings.map((b, i) => (
+            <button
+              key={b.id}
+              type="button"
+              tabIndex={-1}
+              className={`hub__marker${b.id === 'B13' ? ' hub__marker--wispr' : ''}${b.marker.align === 'end' ? ' hub__marker--end' : ''}${visited.includes(b.id) ? ' is-visited' : ''}${hovered?.id === b.id ? ' is-hot' : ''}`}
+              style={{ left: `${b.marker.at[0]}%`, top: `${b.marker.at[1]}%`, animationDelay: `${500 + i * 45}ms` }}
+              onMouseEnter={() => { setHovered(b); preload(b) }}
+              onMouseLeave={() => setHovered(null)}
+              onClick={() => go(b)}
+            >
+              {b.marker.label}
+            </button>
+          ))}
+        </div>
+        {hovered && (
+          <div
+            className={`hub__tip${hovered.marker.at[1] < 32 ? ' hub__tip--below' : ''}${hovered.marker.align === 'end' ? ' hub__tip--end' : ''}`}
+            style={{ left: `${hovered.marker.at[0]}%`, top: `${hovered.marker.at[1]}%` }}
+          >
             <strong>{hovered.name}</strong>
             <span>{hovered.hook}</span>
           </div>

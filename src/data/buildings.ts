@@ -8,6 +8,8 @@ export interface Building {
   hook: string
   /** Polygon in percent of H01 width/height, 0..100. */
   hotspot: [number, number][]
+  /** The name tag on the skyline: a short label pinned at a point on H01, in percent. 'end' keeps a tag near the right edge on screen. */
+  marker: { label: string; at: [number, number]; align?: 'end' }
   priority: 'M' | 'S'
   /** 'vid/V01.mp4'; absent means the 2.5D push-in fallback. */
   clip?: string
@@ -43,6 +45,7 @@ export const buildings: Building[] = [
   {
     id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...ownSwing('01'),
     hook: 'The tallest thing I built. Admissions advisory, zero ads.',
+    marker: { label: 'CET Campus Circle', at: [26.3, 25] },
     hotspot: [[23.4, 5], [29.2, 4], [29.5, 40], [23.4, 40]],
     built: 'A paid admissions advisory for the Maharashtra CAP rounds, plus a Python pipeline that reads a 1,580 page cutoff PDF and turns it into ranked, risk banded recommendations in minutes.',
     proof: 'Free community of 150+ students from Reddit. 30 to 35 paid. Zero paid ads. ₹1,000 early bird, first payment within minutes; 10 to 15 referred students chose the ₹2,500 tier.',
@@ -52,6 +55,7 @@ export const buildings: Building[] = [
   {
     id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...ownSwing('02'),
     hook: 'An AI agency. The lights went out in October.',
+    marker: { label: 'Velnora', at: [57, 41] },
     hotspot: [[51.5, 40], [63, 40], [63, 55], [51.5, 55]],
     built: 'An AI automation agency co-founded with Vivaan Muttoo: custom CRMs and workflow automation, owned end to end from cold discovery and pricing to contracts, delivery and handover.',
     proof: '5+ paying clients across salons, gyms, real estate and enterprise services.',
@@ -61,6 +65,7 @@ export const buildings: Building[] = [
   {
     id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...media('03'),
     hook: 'A food stall, before any of the tech.',
+    marker: { label: 'Fusion Street', at: [54, 72] },
     hotspot: [[33, 79], [44, 72], [55, 70], [67, 66], [69, 70], [56, 76], [44, 84], [36, 86]],
     built: 'A street food stall I co-founded.',
     proof: '₹10,000+ in sales in a single day.',
@@ -69,6 +74,7 @@ export const buildings: Building[] = [
   {
     id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...ownSwing('04'),
     hook: 'Four Mumbai creators onboarded for a Bay Area startup, one researched DM at a time.',
+    marker: { label: 'Palo', at: [79.5, 28] },
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
     built: 'The Mumbai market entry for Palo, an AI creator intelligence platform from the San Francisco Bay Area: the go to market and the sales systems behind it, as a part time GTM and Sales Strategist working remotely across a 12 hour time difference.',
     proof: 'Helped onboard 4 creators in the first month, giving Palo its foothold in Mumbai\'s fitness and wellness niche. Ad hoc outreach turned into a repeatable process.',
@@ -85,6 +91,7 @@ export const buildings: Building[] = [
   {
     id: 'B05', name: 'The 220K billboard', district: 'growth', priority: 'S', ...media('05'),
     hook: 'My best post. And proposals that stopped losing deals.',
+    marker: { label: '220K Billboard', at: [65.7, 20] },
     hotspot: [[61.8, 19.5], [69.5, 19.5], [69.5, 29], [72, 30], [72, 55], [63.5, 55], [63.5, 30]],
     built: 'At Campayn.in (AI Product Manager intern, picked from 300+ applicants) I found client proposals were an unflagged conversion bottleneck, redesigned them, measured the lift and automated the fix. Separately, a Pitch Deck Intelligence Engine sold behind a paywall.',
     proof: 'Best LinkedIn post: 220,000+ impressions.',
@@ -93,6 +100,7 @@ export const buildings: Building[] = [
   {
     id: 'B06', name: 'Wagle Estate', district: 'growth', priority: 'S', ...media('06'),
     hook: 'Teaching my neighbourhood to build with AI.',
+    marker: { label: 'Wagle Estate', at: [44, 54.5] },
     hotspot: [[37, 53.5], [48, 53.5], [53, 59], [52.5, 69], [31.5, 66], [31.5, 59]],
     built: 'Sessions on Claude, MCPs, skills and building agents for residents of Wagle Estate, over four days of my own holidays.',
     proof: '6+ sessions, 50+ residents, 16 hours. Some attendees now build websites for local businesses.',
@@ -102,6 +110,7 @@ export const buildings: Building[] = [
   {
     id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...ownSwing('07'),
     hook: 'Went twice. Won twice. Youngest both times.',
+    marker: { label: 'Claude Build Day', at: [44.3, 23] },
     hotspot: [[38, 23], [50, 23], [50, 42], [38, 42]],
     built: 'AI Game Director: a physical multiplayer game that Claude directs live through safe, structured events. Ragdoll.AI: a browser physics fighter where typed prompts mutate the fighter.',
     proof: 'Two time winner of Claude Build Day Mumbai, youngest winner both times. One of 3 winners from about 80 builders, then one of 2 winners.',
@@ -110,6 +119,7 @@ export const buildings: Building[] = [
   {
     id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
     hook: 'Voice agents that answer real calls, and a skill that gives Claude an ear.',
+    marker: { label: 'Sadie', at: [75.6, 54] },
     hotspot: [[73.5, 54], [79.5, 54], [79.5, 73], [73.5, 73]],
     built: 'Sadie: a multi-tenant inbound voice agent over SIP or browser, with real-time transcription, interruptions and five tools. Retargeted from an Indian sales persona to a US HVAC dispatcher with one new file.',
     proof: '3,186 lines of Python. Time to first token cut from 1.075s to 0.728s. 13 silent defects root caused.',
@@ -123,6 +133,7 @@ export const buildings: Building[] = [
   {
     id: 'B09', name: 'GPU BenchLab', district: 'builder', priority: 'S', ...media('09'),
     hook: 'When accuracy says 100% and is still wrong.',
+    marker: { label: 'GPU BenchLab', at: [89.5, 41] },
     hotspot: [[85, 40.5], [98.5, 41], [98.5, 60], [80.5, 60], [80.5, 53.5], [85, 53.5]],
     built: 'An inference benchmarking framework for PyTorch, ONNX Runtime and TensorRT on an NVIDIA L4.',
     proof: '495 automated tests, 536 immutable evidence files. TF32, the silent default, produced errors 11.8x to 14.7x over tolerance while top 1 accuracy stayed at 100%.',
@@ -131,6 +142,7 @@ export const buildings: Building[] = [
   {
     id: 'B10', name: 'L&T Heavy Engineering', district: 'builder', priority: 'S', ...media('10'),
     hook: 'No problem statement. So I went looking.',
+    marker: { label: 'L&T', at: [18, 43] },
     hotspot: [[8, 44], [24, 41], [32, 46], [32, 60], [8, 57]],
     built: 'As a business development intern, found manual document workflows nobody had flagged and shipped two internal tools from problem definition to documented software in use.',
     proof: 'The deck generator cut production effort by an estimated 70 to 80%.',
@@ -139,6 +151,7 @@ export const buildings: Building[] = [
   {
     id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'),
     hook: 'I throw 33 Indian callers at voice agents to see what breaks.',
+    marker: { label: 'HollrAI', at: [8.5, 28] },
     hotspot: [[5.8, 28], [11.2, 27.5], [11.2, 42], [5.8, 42]],
     built: 'Forward deployed engineer intern at a voice AI startup, from October 2026, working with the cofounders. Building order confirmation and cart recovery dashboards and workflows for a D2C client.',
     proof: '33 Indian edge case scenarios, 12 LLM judge checks, and code checks on every turn of every test call.',
@@ -151,6 +164,7 @@ export const buildings: Building[] = [
   {
     id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),
     hook: "Not everything here works yet. That's the point.",
+    marker: { label: 'The Workshop', at: [85.5, 64] },
     hotspot: [[80, 61], [95.5, 61], [95.5, 76.5], [80, 76.5]],
     built: 'A wrist worn gesture controller (ESP32, MPU6050) for a drone over WiFi/UDP with a 50Hz rate limiter and a 0.5s motor failsafe. A Mumbai Local ticket LED board (RP2040, USB C). An FPGA plant care controller in VHDL, entered in Schneider Electric Yuva Yodha Tech.',
     proof: 'Firmware and receiver complete. The LED board is at design stage.',
@@ -160,6 +174,7 @@ export const buildings: Building[] = [
   {
     id: 'B13', name: 'Wispr Flow India', district: 'finale', priority: 'M',
     hook: 'The one I want next.',
+    marker: { label: 'Wispr Flow India', at: [92.9, 27], align: 'end' },
     hotspot: [[90.5, 24], [95.5, 24], [95.5, 34], [90.5, 34]],
     landing: 'img/F02.jpg', panel: 'img/F05.jpg', voice: 'aud/A-F02.mp3',
     built: "You've been wearing my masks. Here's the one I want next.",
