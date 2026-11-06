@@ -51,12 +51,60 @@ describe('Finale', () => {
     vi.useRealTimers()
   })
 
-  test('reveal holds F05, plays the line, and shows the twist', () => {
-    const audio = fakeAudio()
-    const { container } = render(<Finale state={at('reveal')} dispatch={vi.fn()} audio={audio} />)
-    expect(container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
-    expect(audio.voice).toHaveBeenCalledWith(expect.stringContaining('aud/A-F02.mp3'), expect.any(Function))
-    expect(screen.getByText("You've been wearing my masks. Here's the one I want next.")).toBeInTheDocument()
+  describe('reveal', () => {
+    const twist = "You've been wearing my masks. Here's the one I want next."
+    const cta = "What I'd do at Wispr"
+
+    test('plays his raw clip with sound, instead of the photo and voice line', () => {
+      const audio = fakeAudio()
+      const { container } = render(<Finale state={at('reveal')} dispatch={vi.fn()} audio={audio} />)
+      const v = container.querySelector('video')!
+      expect(v.getAttribute('src')).toContain('vid/raw.mp4')
+      expect(v.muted).toBe(false)
+      expect(audio.voice).not.toHaveBeenCalled()
+      expect(screen.queryByText(twist)).toBeNull()
+      expect(screen.queryByRole('button', { name: cta })).toBeNull()
+    })
+
+    test('captions follow what he is saying', () => {
+      const { container } = render(<Finale state={at('reveal')} dispatch={vi.fn()} audio={fakeAudio()} />)
+      const v = container.querySelector('video')!
+      const at_ = (t: number) => { Object.defineProperty(v, 'currentTime', { value: t, configurable: true }); fireEvent.timeUpdate(v) }
+      at_(10)
+      expect(screen.getByText('And now, my next mask is going to be growing Wispr Flow in India.')).toBeInTheDocument()
+      at_(14.2)
+      expect(screen.getByText('See you there, guys.')).toBeInTheDocument()
+    })
+
+    test('when the clip ends the twist and the way on appear', () => {
+      const dispatch = vi.fn()
+      const { container } = render(<Finale state={at('reveal')} dispatch={dispatch} audio={fakeAudio()} />)
+      const v = container.querySelector('video')!
+      fireEvent.ended(v)
+      expect(screen.getByText(twist)).toBeInTheDocument()
+      expect(container.querySelector('.finale__caption')).toBeNull()
+      expect(v.className).toContain('finale__raw--ended')
+      fireEvent.click(screen.getByRole('button', { name: cta }))
+      expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
+    })
+
+    test('a reviewer can skip the clip', () => {
+      const dispatch = vi.fn()
+      render(<Finale state={at('reveal')} dispatch={dispatch} audio={fakeAudio()} />)
+      fireEvent.click(screen.getByRole('button', { name: 'Skip' }))
+      expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
+    })
+
+    test('if the clip fails it falls back to the photo, the voice line and the twist', () => {
+      const audio = fakeAudio()
+      const { container } = render(<Finale state={at('reveal')} dispatch={vi.fn()} audio={audio} />)
+      fireEvent.error(container.querySelector('video')!)
+      expect(container.querySelector('video')).toBeNull()
+      expect(container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
+      expect(audio.voice).toHaveBeenCalledWith(expect.stringContaining('aud/A-F02.mp3'))
+      expect(screen.getByText(twist)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: cta })).toBeInTheDocument()
+    })
   })
 
   test('growth shows the contact links and opens How this was built', () => {
