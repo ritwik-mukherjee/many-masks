@@ -18,27 +18,27 @@ describe('Finale', () => {
     expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
   })
 
-  test('face shows the hero, plays the prompt line, and Take it off unmasks', () => {
+  test('face shows the hero, and Take it off unmasks', () => {
     const dispatch = vi.fn()
-    const audio = fakeAudio()
-    const { container } = render(<Finale state={at('face')} dispatch={dispatch} audio={audio} />)
+    const { container } = render(<Finale state={at('face')} dispatch={dispatch} audio={fakeAudio()} />)
     expect(container.querySelector('img[src*="img/F02.jpg"]')).not.toBeNull()
-    expect(audio.voice).toHaveBeenCalledWith(expect.stringContaining('aud/A-F01.mp3'))
     fireEvent.click(screen.getByRole('button', { name: 'Take it off' }))
     expect(dispatch).toHaveBeenCalledWith({ type: 'UNMASK' })
   })
 
-  test('face does not listen while its own "take it off" line is playing', () => {
-    vi.useFakeTimers()
+  test('face has no spoken prompt, no on-screen prompt and never touches the microphone', () => {
     const start = vi.fn()
     vi.stubGlobal('webkitSpeechRecognition', class { onresult = null; onerror = null; onend = null; lang = ''; interimResults = false; continuous = false; start = start; stop() {} abort() {} })
-    render(<Finale state={at('face')} dispatch={vi.fn()} audio={fakeAudio()} />)
-    act(() => vi.advanceTimersByTime(3900))
+    vi.useFakeTimers()
+    const audio = fakeAudio()
+    render(<Finale state={at('face')} dispatch={vi.fn()} audio={audio} />)
+    act(() => vi.advanceTimersByTime(10_000))
+    expect(audio.voice).not.toHaveBeenCalled()
     expect(start).not.toHaveBeenCalled()
-    act(() => vi.advanceTimersByTime(600))
-    expect(start).toHaveBeenCalledTimes(1)
-    vi.unstubAllGlobals()
+    expect(screen.queryByText(/say/i)).toBeNull()
+    expect(screen.queryByText(/listening/i)).toBeNull()
     vi.useRealTimers()
+    vi.unstubAllGlobals()
   })
 
   test('unmasking plays the pull-off with a whoosh and moves on when the cloth has gone dark', () => {
