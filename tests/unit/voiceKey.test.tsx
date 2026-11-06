@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 import VoiceKey from '../../src/components/VoiceKey'
 import { matchesTakeItOff } from '../../src/lib/voiceKey'
@@ -46,6 +46,33 @@ describe('VoiceKey', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Take it off' }))
     expect(onUnmask).toHaveBeenCalledTimes(1)
     expect(err).not.toHaveBeenCalled()
+  })
+
+  test('with listenAfterMs it stays deaf until the spoken prompt is over, while the button still works', () => {
+    vi.useFakeTimers()
+    const start = vi.fn()
+    class Hears {
+      onresult = null
+      onerror = null
+      onend = null
+      lang = ''
+      interimResults = false
+      continuous = false
+      start = start
+      stop() {}
+      abort() {}
+    }
+    vi.stubGlobal('webkitSpeechRecognition', Hears)
+    const onUnmask = vi.fn()
+    render(<VoiceKey onUnmask={onUnmask} listenAfterMs={4500} />)
+    expect(start).not.toHaveBeenCalled()
+    expect(screen.queryByText(/listening/i)).toBeNull()
+    act(() => vi.advanceTimersByTime(4500))
+    expect(start).toHaveBeenCalledTimes(1)
+    expect(screen.getByText(/listening/i)).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: 'Take it off' }))
+    expect(onUnmask).toHaveBeenCalledTimes(1)
+    vi.useRealTimers()
   })
 
   test('hearing "take it off" unmasks', () => {

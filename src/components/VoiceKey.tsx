@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { createVoiceKey } from '../lib/voiceKey'
 
 /** "Say take it off": voice is the key to the finale. The button always works too. */
-export default function VoiceKey({ onUnmask }: { onUnmask: () => void }) {
+export default function VoiceKey({ onUnmask, listenAfterMs = 0 }: { onUnmask: () => void; listenAfterMs?: number }) {
   const fired = useRef(false)
   const [listening, setListening] = useState(false)
 
@@ -15,9 +15,20 @@ export default function VoiceKey({ onUnmask }: { onUnmask: () => void }) {
   useEffect(() => {
     const key = createVoiceKey(unmask, () => setListening(false))
     if (!key.supported) return
-    setListening(true)
-    key.start()
-    return () => key.stop()
+    const listen = () => {
+      setListening(true)
+      key.start()
+    }
+    if (!listenAfterMs) {
+      listen()
+      return () => key.stop()
+    }
+    // The mic stays off while a spoken prompt plays, or laptop speakers would say the key to it.
+    const t = setTimeout(listen, listenAfterMs)
+    return () => {
+      clearTimeout(t)
+      key.stop()
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

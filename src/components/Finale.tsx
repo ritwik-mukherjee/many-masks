@@ -9,6 +9,8 @@ import LensOverlay from './LensOverlay'
 import VoiceKey from './VoiceKey'
 
 const SAFETY_MS = 15000
+/** A-F01 runs about 4 s and says "take it off" itself, so the mic waits for it to finish. */
+const PROMPT_MS = 4500
 
 /** A video step that always moves on: when it ends, errors, or never finishes. */
 function Clip({ src, poster, onDone, lens = false }: { src: string; poster: string; onDone: () => void; lens?: boolean }) {
@@ -56,7 +58,7 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
       {step === 'face' && (
         <>
           <img className="fill finale__still" src={media('img/F02.jpg')} alt="The masked hero in the maroon jacket, yellow goggles and cream face wrap, on a Mumbai rooftop, facing you" />
-          <VoiceKey onUnmask={() => { audio.stopVoice(); dispatch({ type: 'UNMASK' }) }} />
+          <VoiceKey listenAfterMs={PROMPT_MS} onUnmask={() => { audio.stopVoice(); dispatch({ type: 'UNMASK' }) }} />
         </>
       )}
 

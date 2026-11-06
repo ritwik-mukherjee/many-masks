@@ -8,6 +8,7 @@ export default function LoadingScreen({ audio, dispatch }: { audio: Audio; dispa
   function start() {
     audio.unlock()
     audio.ambient('city', 0.35)
+    audio.voice(media('aud/A-O01.mp3'))
     dispatch({ type: 'START' })
   }
 

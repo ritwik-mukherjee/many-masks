@@ -47,7 +47,7 @@ export const buildings: Building[] = [
     built: 'A paid admissions advisory for the Maharashtra CAP rounds, plus a Python pipeline that reads a 1,580 page cutoff PDF and turns it into ranked, risk banded recommendations in minutes.',
     proof: 'Free community of 150+ students from Reddit. 30 to 35 paid. Zero paid ads. ₹1,000 early bird, first payment within minutes; 10 to 15 referred students chose the ₹2,500 tier.',
     cracked: 'A student was unhappy and my co-founders disagreed on a refund. I refunded him in full from my own share.',
-    transcript: "CET Campus Circle is my admissions advisory for the Maharashtra CAP rounds. We grew a free community of over 150 students from Reddit, and 30 to 35 of them paid, with zero ads. I wrote a pipeline that reads a 1,580 page cutoff PDF, so every student got ranked options in minutes, not hours. The hardest call: one student wasn't happy, my co-founders didn't agree on a refund, so I paid it back in full from my own share.",
+    transcript: "CET Campus Circle is my admissions advisory for the Maharashtra CAP rounds. We grew a free community of over 150 students from Reddit, and about 30 to 35 of them paid, with zero marketing spend and ads. I wrote a pipeline that reads a 1,580 page cutoff PDF, so every student got ranked options in minutes, not hours. The hardest call: one student wasn't happy, my co-founders did not agree on a refund, so I paid it back in full from my own share.",
   },
   {
     id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...ownSwing('02'),
@@ -55,8 +55,8 @@ export const buildings: Building[] = [
     hotspot: [[51.5, 40], [63, 40], [63, 55], [51.5, 55]],
     built: 'An AI automation agency co-founded with Vivaan Muttoo: custom CRMs and workflow automation, owned end to end from cold discovery and pricing to contracts, delivery and handover.',
     proof: '5+ paying clients across salons, gyms, real estate and enterprise services.',
-    cracked: 'Paused in October 2026.',
-    transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October.',
+    cracked: 'Paused in October 2026: studies became serious and we could not give it enough time.',
+    transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October because studies really became serious and we could not get enough time to hop on to it.',
   },
   {
     id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...media('03'),
@@ -64,7 +64,7 @@ export const buildings: Building[] = [
     hotspot: [[33, 79], [44, 72], [55, 70], [67, 66], [69, 70], [56, 76], [44, 84], [36, 86]],
     built: 'A street food stall I co-founded.',
     proof: '₹10,000+ in sales in a single day.',
-    transcript: 'Before any of the tech, there was a food stall. The Fusion Street. We did over ten thousand rupees in sales in a single day. Nothing teaches you selling like a walk-in customer who can just keep walking.',
+    transcript: 'Before any of the tech, there was a food stall. The Fusion Street. We did over ten thousand rupees in sales in one single day. And mind you, we were profitable. Nothing teaches you selling like a walk-in customer who can just keep walking and never eat at your stall.',
   },
   {
     id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...ownSwing('04'),
@@ -88,7 +88,7 @@ export const buildings: Building[] = [
     hotspot: [[61.8, 19.5], [69.5, 19.5], [69.5, 29], [72, 30], [72, 55], [63.5, 55], [63.5, 30]],
     built: 'At Campayn.in (AI Product Manager intern, picked from 300+ applicants) I found client proposals were an unflagged conversion bottleneck, redesigned them, measured the lift and automated the fix. Separately, a Pitch Deck Intelligence Engine sold behind a paywall.',
     proof: 'Best LinkedIn post: 220,000+ impressions.',
-    transcript: "My best LinkedIn post crossed 220,000 impressions. I post often, and I'm comfortable on camera. At Campayn, where I was picked from over 300 applicants, I noticed client proposals were quietly losing deals. So I redesigned them, measured the lift, and automated the fix.",
+    transcript: "My best LinkedIn post crossed 220,000 impressions. I post often, and I'm comfortable on camera. At Campayn, where I was picked from over 300 applicants, I noticed client proposals were quietly losing deals. So I redesigned them, measured the lift, and automated the fix. Apart from that, I custom-designed workflows and automations which helped with cold outreach and increased the number of people who came on and got their work done at Campayn.",
   },
   {
     id: 'B06', name: 'Wagle Estate', district: 'growth', priority: 'S', ...media('06'),
@@ -97,7 +97,7 @@ export const buildings: Building[] = [
     built: 'Sessions on Claude, MCPs, skills and building agents for residents of Wagle Estate, over four days of my own holidays.',
     proof: '6+ sessions, 50+ residents, 16 hours. Some attendees now build websites for local businesses.',
     cracked: 'I nearly gave up. Getting a crowd to show up was the hardest part.',
-    transcript: 'Over four days of my holidays, I ran six plus sessions for fifty plus residents of Wagle Estate, teaching them Claude. Sixteen hours. Honestly, I nearly gave up, because getting people to show up was the hardest part. Some of them now build websites for local businesses.',
+    transcript: 'Over four days of my holiday, I ran six plus sessions for fifty plus residents of Wagle Estate, teaching them Claude. Sixteen hours. Honestly, I nearly gave up, because getting people to show up was the hardest part. Some of them now build websites for local businesses. So I would take that as a win, honestly.',
   },
   {
     id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...ownSwing('07'),
@@ -105,7 +105,7 @@ export const buildings: Building[] = [
     hotspot: [[38, 23], [50, 23], [50, 42], [38, 42]],
     built: 'AI Game Director: a physical multiplayer game that Claude directs live through safe, structured events. Ragdoll.AI: a browser physics fighter where typed prompts mutate the fighter.',
     proof: 'Two time winner of Claude Build Day Mumbai, youngest winner both times. One of 3 winners from about 80 builders, then one of 2 winners.',
-    transcript: 'Claude Build Day Mumbai. I went twice and won twice, the youngest winner both times. First, AI Game Director, a physical multiplayer game that Claude directs live, one of three winners out of about eighty builders. Then Ragdoll.AI, where your prompts rewrite the fighter mid-fight.',
+    transcript: 'Claude Build Day Mumbai. I went twice and won twice, the youngest winner both times. First, AI Game Director, a physical multiplayer game that Claude directs live, one of the three winners out of about eighty builders selected from 10,000 applicants. Then Ragdoll.AI, where your prompts rewrite the fighter mid-fight. All of them out of my creativity and mindset, which I was able to deliver on that day within two hours of build time.',
   },
   {
     id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
@@ -146,7 +146,7 @@ export const buildings: Building[] = [
       { name: 'hollr-eval', note: 'Throws 33 realistic Indian callers at a voice agent: flirting, angry callers, "where did you get my number?", someone else picking up, Hinglish switches, interruptions, long silences, family chatter in the background. It scores every turn, suggests small prompt fixes, then re-tests to prove what got better and that nothing else broke.' },
       { name: 'Agent builder', note: 'Turns a client intake into voice prompts, analysis prompts, runtime config and a setup sheet, so a new voice agent starts from the same blueprint.' },
     ],
-    transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. I built a test rig that throws thirty three Indian callers at a voice agent: angry ones, flirting ones, Hinglish switches, family chatter in the background. Then it fixes the prompt and proves the fix worked. Another mask.",
+    transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. I've built a test rig that throws thirty three Indian callers at a voice agent: angry ones, flirting ones, Hinglish switches, family chatter in the background. Then it fixes the prompt and proves the fix worked. Another mask.",
   },
   {
     id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),

@@ -28,6 +28,19 @@ describe('Finale', () => {
     expect(dispatch).toHaveBeenCalledWith({ type: 'UNMASK' })
   })
 
+  test('face does not listen while its own "take it off" line is playing', () => {
+    vi.useFakeTimers()
+    const start = vi.fn()
+    vi.stubGlobal('webkitSpeechRecognition', class { onresult = null; onerror = null; onend = null; lang = ''; interimResults = false; continuous = false; start = start; stop() {} abort() {} })
+    render(<Finale state={at('face')} dispatch={vi.fn()} audio={fakeAudio()} />)
+    act(() => vi.advanceTimersByTime(3900))
+    expect(start).not.toHaveBeenCalled()
+    act(() => vi.advanceTimersByTime(600))
+    expect(start).toHaveBeenCalledTimes(1)
+    vi.unstubAllGlobals()
+    vi.useRealTimers()
+  })
+
   test('unmasking crossfades from the mask to the face and moves on', () => {
     vi.useFakeTimers()
     const dispatch = vi.fn()
