@@ -145,7 +145,21 @@
 .finale { position: fixed; inset: 0; overflow: hidden; background: #05060c; }
 .finale__still { animation: finale-push 20s ease-out forwards; }
 @keyframes finale-push { from { transform: scale(1.04); } to { transform: scale(1.12); } }
-.finale__unmask-cta { position: absolute; left: 50%; bottom: 10vh; translate: -50% 0; z-index: 3; }
+/* Hold to say: the button, the visitor's own words as a live caption above it, and a plain way out below. */
+.holdkey { position: absolute; left: 50%; bottom: 5vh; translate: -50% 0; z-index: 3; width: min(44rem, 92vw); display: grid; justify-items: center; gap: 12px; }
+.holdkey__caption { margin: 0; text-align: center; font-size: clamp(18px, 1.6vw, 26px); animation: rise-in 0.15s ease-out both; }
+.holdkey__hint { margin: 0; padding: 4px 12px; text-align: center; font-size: 16px; font-weight: 600; color: var(--cream); background: rgb(14 14 16 / 0.82); }
+.holdkey__hold { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-width: 19rem; touch-action: none; user-select: none; -webkit-user-select: none; }
+.holdkey__hold.is-on, .holdkey__hold.is-on:hover { transform: translate(3px, 3px); box-shadow: 2px 2px 0 var(--ink); background: var(--cream); }
+.holdkey__wave { display: inline-flex; align-items: center; gap: 3px; height: 24px; }
+.holdkey__wave i { width: 4px; height: 100%; border-radius: 2px; background: var(--maroon); transform-origin: center; animation: hold-wave 720ms ease-in-out infinite; }
+.holdkey__wave i:nth-child(2) { animation-delay: -560ms; }
+.holdkey__wave i:nth-child(3) { animation-delay: -280ms; }
+.holdkey__wave i:nth-child(4) { animation-delay: -640ms; }
+.holdkey__wave i:nth-child(5) { animation-delay: -120ms; }
+@keyframes hold-wave { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+.holdkey__plain { border: 0; background: rgb(14 14 16 / 0.72); padding: 3px 10px; color: var(--cream); font-size: 15px; text-decoration: underline; text-underline-offset: 3px; }
+.holdkey__plain:hover { color: var(--signal); }
 .finale__reveal { position: absolute; left: 6vw; bottom: 10vh; z-index: 2; max-width: 34rem; display: grid; gap: 14px; justify-items: start; }
 /* His clip sits in the middle third; when it ends, the frame dims and the line stays in the blurred side. */
 .finale__raw { transition: filter 600ms ease; }

@@ -41,6 +41,6 @@ test('finale: the tower, take it off, the reveal', async ({ page }) => {
   await page.goto('/')
   await toHub(page)
   await hotspot(page, 'Wispr Flow India').click()
-  await page.getByRole('button', { name: 'Take it off' }).click({ timeout: 15_000 })
+  await page.getByRole('button', { name: /^(just )?take it off$/i }).click({ timeout: 15_000 })
   await expect(page.getByText("You've been wearing my masks. Here's the one I want next.")).toBeVisible({ timeout: 15_000 })
 })

@@ -5,6 +5,7 @@ import { rawClipCaptions } from '../data/rawClip'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
 import type { JourneyAction, JourneyState } from '../state/journey'
+import HoldToSay from './HoldToSay'
 import HowBuilt from './HowBuilt'
 import LensOverlay from './LensOverlay'
 
@@ -100,7 +101,7 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
       {step === 'face' && (
         <>
           <img className="fill" src={media('img/F02.jpg')} alt="The masked hero in the maroon jacket, yellow goggles and cream face wrap, on a Mumbai rooftop, facing you" />
-          <button type="button" className="cta finale__unmask-cta" onClick={() => dispatch({ type: 'UNMASK' })}>Take it off</button>
+          <HoldToSay onUnmask={() => dispatch({ type: 'UNMASK' })} />
         </>
       )}
 
