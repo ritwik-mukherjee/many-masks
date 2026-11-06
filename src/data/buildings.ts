@@ -63,7 +63,7 @@ export const buildings: Building[] = [
     transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October because studies really became serious and we could not get enough time to hop on to it.',
   },
   {
-    id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...media('03'),
+    id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...ownSwing('03'),
     hook: 'A food stall, before any of the tech.',
     marker: { label: 'Fusion Street', at: [54, 72] },
     hotspot: [[33, 79], [44, 72], [55, 70], [67, 66], [69, 70], [56, 76], [44, 84], [36, 86]],
@@ -117,7 +117,7 @@ export const buildings: Building[] = [
     transcript: 'Claude Build Day Mumbai. I went twice and won twice, the youngest winner both times. First, AI Game Director, a physical multiplayer game that Claude directs live, one of the three winners out of about eighty builders selected from 10,000 applicants. Then Ragdoll.AI, where your prompts rewrite the fighter mid-fight. All of them out of my creativity and mindset, which I was able to deliver on that day within two hours of build time.',
   },
   {
-    id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
+    id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...ownSwing('08'),
     hook: 'Voice agents that answer real calls, and a skill that gives Claude an ear.',
     marker: { label: 'Sadie', at: [75.6, 54] },
     hotspot: [[73.5, 54], [79.5, 54], [79.5, 73], [73.5, 73]],
@@ -140,7 +140,7 @@ export const buildings: Building[] = [
     transcript: 'GPU BenchLab benchmarks AI models on an NVIDIA L4, with 495 automated tests. The interesting part: a silent default called TF32 pushed errors twelve to fifteen times past tolerance, while accuracy still read a hundred percent. Accuracy alone would have lied to me.',
   },
   {
-    id: 'B10', name: 'L&T Heavy Engineering', district: 'builder', priority: 'S', ...media('10'),
+    id: 'B10', name: 'L&T Heavy Engineering', district: 'builder', priority: 'S', ...ownSwing('10'),
     hook: 'No problem statement. So I went looking.',
     marker: { label: 'L&T', at: [18, 43] },
     hotspot: [[8, 44], [24, 41], [32, 46], [32, 60], [8, 57]],
@@ -149,7 +149,7 @@ export const buildings: Building[] = [
     transcript: 'At L&T Heavy Engineering, nobody gave me a problem statement. So I went looking, found two manual workflows nobody had flagged, and shipped two internal tools. One of them cut the effort of building decks by an estimated seventy to eighty percent.',
   },
   {
-    id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'),
+    id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'), clip: 'vid/swing-b.mp4',
     hook: 'I throw 33 Indian callers at voice agents to see what breaks.',
     marker: { label: 'HollrAI', at: [8.5, 28] },
     hotspot: [[5.8, 28], [11.2, 27.5], [11.2, 42], [5.8, 42]],
@@ -162,7 +162,7 @@ export const buildings: Building[] = [
     transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. I've built a test rig that throws thirty three Indian callers at a voice agent: angry ones, flirting ones, Hinglish switches, family chatter in the background. Then it fixes the prompt and proves the fix worked. Another mask.",
   },
   {
-    id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),
+    id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...ownSwing('12'),
     hook: "Not everything here works yet. That's the point.",
     marker: { label: 'The Workshop', at: [85.5, 64] },
     hotspot: [[80, 61], [95.5, 61], [95.5, 76.5], [80, 76.5]],

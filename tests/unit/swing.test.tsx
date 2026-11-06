@@ -4,14 +4,20 @@ import SwingPlayer from '../../src/components/SwingPlayer'
 import { buildingById } from '../../src/data/buildings'
 
 const cet = buildingById('B01')
-const shared = buildingById('B03')
+const shared = buildingById('B05')
 const noClip = { ...buildingById('B03'), clip: undefined }
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 
 describe('SwingPlayer', () => {
-  test.each([['B01', 'V01'], ['B02', 'V02'], ['B04', 'V04'], ['B07', 'V07']] as const)('%s plays its own swing and freezes on its last frame', (id, clip) => {
+  test('the chapters left on the two shared clips split evenly between them', () => {
+    const clips = (['B05', 'B06', 'B09', 'B11'] as const).map((id) => buildingById(id).clip)
+    expect(clips.filter((c) => c === 'vid/swing-a.mp4')).toHaveLength(2)
+    expect(clips.filter((c) => c === 'vid/swing-b.mp4')).toHaveLength(2)
+  })
+
+  test.each([['B01', 'V01'], ['B02', 'V02'], ['B03', 'V03'], ['B04', 'V04'], ['B07', 'V07'], ['B08', 'V08'], ['B10', 'V10'], ['B12', 'V12']] as const)('%s plays its own swing and freezes on its last frame', (id, clip) => {
     const onEnded = vi.fn()
     const { container } = render(<SwingPlayer building={buildingById(id)} onEnded={onEnded} reducedMotion={false} />)
     const video = container.querySelector('video')!
