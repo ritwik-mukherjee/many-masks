@@ -1,6 +1,6 @@
 export const links = {
   email: 'ritwikmukherjee08@gmail.com',
-  linkedin: '',
+  linkedin: 'https://www.linkedin.com/in/ritwik-mukherjee-6251b5390',
   github: 'https://github.com/ritwik-mukherjee',
   /** Only after the CET line is corrected to 30 to 35 paid. */
   resume: '',
