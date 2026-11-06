@@ -36,14 +36,12 @@ export const districtNames: Record<District, string> = {
   finale: 'Bengaluru',
 }
 
-// Every swing is a real first-person clip; two shared cuts alternate so repeat visits feel different.
-const media = (n: string) => ({ clip: Number(n) % 2 ? 'vid/swing-a.mp4' : 'vid/swing-b.mp4', landing: `img/K${n}.jpg`, panel: `img/P${n}.jpg`, voice: `aud/A-B${n}.mp3` })
-// The main chapters have a swing of their own, shot from the hub view to that building's roof.
-const ownSwing = (n: string) => ({ ...media(n), clip: `vid/V${n}.mp4`, landsOnClip: true })
+// Every chapter has its own first-person swing, shot from the hub view to that building.
+const media = (n: string) => ({ clip: `vid/V${n}.mp4`, landsOnClip: true, landing: `img/K${n}.jpg`, panel: `img/P${n}.jpg`, voice: `aud/A-B${n}.mp3` })
 
 export const buildings: Building[] = [
   {
-    id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...ownSwing('01'),
+    id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...media('01'),
     hook: 'The tallest thing I built. Admissions advisory, zero ads.',
     marker: { label: 'CET Campus Circle', at: [26.3, 25] },
     hotspot: [[23.4, 5], [29.2, 4], [29.5, 40], [23.4, 40]],
@@ -53,7 +51,7 @@ export const buildings: Building[] = [
     transcript: "CET Campus Circle is my admissions advisory for the Maharashtra CAP rounds. We grew a free community of over 150 students from Reddit, and about 30 to 35 of them paid, with zero marketing spend and ads. I wrote a pipeline that reads a 1,580 page cutoff PDF, so every student got ranked options in minutes, not hours. The hardest call: one student wasn't happy, my co-founders did not agree on a refund, so I paid it back in full from my own share.",
   },
   {
-    id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...ownSwing('02'),
+    id: 'B02', name: 'Velnora', district: 'founder', priority: 'M', ...media('02'),
     hook: 'An AI agency. The lights went out in October.',
     marker: { label: 'Velnora', at: [57, 41] },
     hotspot: [[51.5, 40], [63, 40], [63, 55], [51.5, 55]],
@@ -63,7 +61,7 @@ export const buildings: Building[] = [
     transcript: 'Velnora was the AI automation agency I co-founded with Vivaan. Salons, gyms, real estate: five plus paying clients, from the cold call to the contract to the handover. Biggest lesson: what a client asks for is almost never the workflow they actually run. We paused it in October because studies really became serious and we could not get enough time to hop on to it.',
   },
   {
-    id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...ownSwing('03'),
+    id: 'B03', name: 'The Fusion Street', district: 'founder', priority: 'S', ...media('03'),
     hook: 'A food stall, before any of the tech.',
     marker: { label: 'Fusion Street', at: [54, 72] },
     hotspot: [[33, 79], [44, 72], [55, 70], [67, 66], [69, 70], [56, 76], [44, 84], [36, 86]],
@@ -72,7 +70,7 @@ export const buildings: Building[] = [
     transcript: 'Before any of the tech, there was a food stall. The Fusion Street. We did over ten thousand rupees in sales in one single day. And mind you, we were profitable. Nothing teaches you selling like a walk-in customer who can just keep walking and never eat at your stall.',
   },
   {
-    id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...ownSwing('04'),
+    id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...media('04'),
     hook: 'Four Mumbai creators onboarded for a Bay Area startup, one researched DM at a time.',
     marker: { label: 'Palo', at: [79.5, 28] },
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
@@ -108,7 +106,7 @@ export const buildings: Building[] = [
     transcript: 'Over four days of my holiday, I ran six plus sessions for fifty plus residents of Wagle Estate, teaching them Claude. Sixteen hours. Honestly, I nearly gave up, because getting people to show up was the hardest part. Some of them now build websites for local businesses. So I would take that as a win, honestly.',
   },
   {
-    id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...ownSwing('07'),
+    id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...media('07'),
     hook: 'Went twice. Won twice. Youngest both times.',
     marker: { label: 'Claude Build Day', at: [44.3, 23] },
     hotspot: [[38, 23], [50, 23], [50, 42], [38, 42]],
@@ -117,7 +115,7 @@ export const buildings: Building[] = [
     transcript: 'Claude Build Day Mumbai. I went twice and won twice, the youngest winner both times. First, AI Game Director, a physical multiplayer game that Claude directs live, one of the three winners out of about eighty builders selected from 10,000 applicants. Then Ragdoll.AI, where your prompts rewrite the fighter mid-fight. All of them out of my creativity and mindset, which I was able to deliver on that day within two hours of build time.',
   },
   {
-    id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...ownSwing('08'),
+    id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
     hook: 'Voice agents that answer real calls, and a skill that gives Claude an ear.',
     marker: { label: 'Sadie', at: [75.6, 54] },
     hotspot: [[73.5, 54], [79.5, 54], [79.5, 73], [73.5, 73]],
@@ -140,7 +138,7 @@ export const buildings: Building[] = [
     transcript: 'GPU BenchLab benchmarks AI models on an NVIDIA L4, with 495 automated tests. The interesting part: a silent default called TF32 pushed errors twelve to fifteen times past tolerance, while accuracy still read a hundred percent. Accuracy alone would have lied to me.',
   },
   {
-    id: 'B10', name: 'L&T Heavy Engineering', district: 'builder', priority: 'S', ...ownSwing('10'),
+    id: 'B10', name: 'L&T Heavy Engineering', district: 'builder', priority: 'S', ...media('10'),
     hook: 'No problem statement. So I went looking.',
     marker: { label: 'L&T', at: [18, 43] },
     hotspot: [[8, 44], [24, 41], [32, 46], [32, 60], [8, 57]],
@@ -149,7 +147,7 @@ export const buildings: Building[] = [
     transcript: 'At L&T Heavy Engineering, nobody gave me a problem statement. So I went looking, found two manual workflows nobody had flagged, and shipped two internal tools. One of them cut the effort of building decks by an estimated seventy to eighty percent.',
   },
   {
-    id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'), clip: 'vid/swing-b.mp4',
+    id: 'B11', name: 'HollrAI', district: 'builder', priority: 'S', ...media('11'),
     hook: 'I throw 33 Indian callers at voice agents to see what breaks.',
     marker: { label: 'HollrAI', at: [8.5, 28] },
     hotspot: [[5.8, 28], [11.2, 27.5], [11.2, 42], [5.8, 42]],
@@ -162,7 +160,7 @@ export const buildings: Building[] = [
     transcript: "Right now I'm a forward deployed engineer intern at HollrAI, a voice AI startup. Forward deployed means you work inside the client's business until you understand it better than the brief does. I've built a test rig that throws thirty three Indian callers at a voice agent: angry ones, flirting ones, Hinglish switches, family chatter in the background. Then it fixes the prompt and proves the fix worked. Another mask.",
   },
   {
-    id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...ownSwing('12'),
+    id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),
     hook: "Not everything here works yet. That's the point.",
     marker: { label: 'The Workshop', at: [85.5, 64] },
     hotspot: [[80, 61], [95.5, 61], [95.5, 76.5], [80, 76.5]],

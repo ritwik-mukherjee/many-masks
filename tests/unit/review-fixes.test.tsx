@@ -15,7 +15,7 @@ import { createAudio, type Audio } from '../../src/lib/audio'
 import { shouldSeek } from '../../src/lib/scrub'
 import { initialJourney } from '../../src/state/journey'
 
-const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), ambient: vi.fn(), dispose: vi.fn() })
+const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), ambient: vi.fn(), dispose: vi.fn() })
 
 describe('Critical 1: the push-in never freezes on an unloaded (black) landing frame', () => {
   beforeEach(() => vi.useFakeTimers())

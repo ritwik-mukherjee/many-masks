@@ -7,8 +7,9 @@ import type { JourneyAction } from '../state/journey'
 export default function LoadingScreen({ audio, dispatch }: { audio: Audio; dispatch: Dispatch<JourneyAction> }) {
   function start() {
     audio.unlock()
-    audio.ambient('city', 0.35)
-    audio.voice(media('aud/A-O01.mp3'))
+    // The city sits low under the score until the visitor reaches it.
+    audio.ambient('city', 0.12)
+    audio.music(media('aud/score.mp3'))
     dispatch({ type: 'START' })
   }
 

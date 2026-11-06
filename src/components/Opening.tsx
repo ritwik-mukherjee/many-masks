@@ -98,6 +98,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
     c.height = 1080
     try { if (v) c.getContext('2d')?.drawImage(v, 0, 0, c.width, c.height) } catch { /* not drawable */ }
     setFrame(c)
+    audio.stopMusic(1200)
     audio.voice(media('aud/A-P00.mp3'))
   }, [landed, audio])
 

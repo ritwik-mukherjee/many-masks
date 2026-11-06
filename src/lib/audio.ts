@@ -2,6 +2,8 @@ import { media } from './media'
 
 export type SfxName = 'fire' | 'whoosh' | 'wind' | 'city' | 'ink'
 
+const FADE_STEP_MS = 50
+
 /**
  * All sound goes through here. Nothing plays until unlock() is called from the
  * "Put it on" click, because browsers block audio before a user gesture.
@@ -9,6 +11,7 @@ export type SfxName = 'fire' | 'whoosh' | 'wind' | 'city' | 'ink'
 export function createAudio() {
   let isUnlocked = false
   let currentVoice: HTMLAudioElement | null = null
+  let currentMusic: HTMLAudioElement | null = null
   const loops = new Map<SfxName, HTMLAudioElement>()
 
   const safePlay = (el: HTMLMediaElement) => {
@@ -58,12 +61,46 @@ export function createAudio() {
       currentVoice?.pause()
       currentVoice = null
     },
-    /** Stops every loop and the current voice line. */
+    /** The score. Starts only once; calling it again while it plays does nothing. */
+    music(src: string, volume = 0.8) {
+      if (!isUnlocked || currentMusic) return
+      const el = new Audio(src)
+      el.loop = true
+      el.volume = volume
+      currentMusic = el
+      safePlay(el)
+    },
+    /** Fades the score out over ms, then stops it, so it can be started again later. */
+    stopMusic(ms = 1500) {
+      const el = currentMusic
+      if (!el) return
+      currentMusic = null
+      const from = el.volume
+      const steps = Math.max(1, Math.round(ms / FADE_STEP_MS))
+      let step = 0
+      const finish = () => {
+        el.volume = 0
+        el.pause()
+      }
+      if (ms <= 0) return finish()
+      const t = setInterval(() => {
+        step += 1
+        if (step >= steps) {
+          clearInterval(t)
+          finish()
+        } else {
+          el.volume = from * (1 - step / steps)
+        }
+      }, FADE_STEP_MS)
+    },
+    /** Stops every loop, the score and the current voice line. */
     dispose() {
       for (const el of loops.values()) el.pause()
       loops.clear()
       currentVoice?.pause()
       currentVoice = null
+      currentMusic?.pause()
+      currentMusic = null
     },
   }
 }

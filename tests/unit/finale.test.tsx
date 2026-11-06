@@ -5,7 +5,7 @@ import { links } from '../../src/data/links'
 import type { Audio } from '../../src/lib/audio'
 import { initialJourney, type FinaleStep } from '../../src/state/journey'
 
-const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), ambient: vi.fn() })
+const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), ambient: vi.fn() })
 const at = (finale: FinaleStep) => ({ ...initialJourney, phase: 'finale' as const, current: 'B13' as const, finale })
 
 describe('Finale', () => {

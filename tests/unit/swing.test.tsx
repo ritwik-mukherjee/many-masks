@@ -1,23 +1,18 @@
 import { act, fireEvent, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import SwingPlayer from '../../src/components/SwingPlayer'
-import { buildingById } from '../../src/data/buildings'
+import { buildingById, type BuildingId } from '../../src/data/buildings'
 
 const cet = buildingById('B01')
-const shared = buildingById('B05')
+const stillLanding = { ...buildingById('B05'), landsOnClip: false }
+const chapters = (['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'] as const).map((n) => [`B${n}` as BuildingId, `V${n}`] as const)
 const noClip = { ...buildingById('B03'), clip: undefined }
 
 beforeEach(() => vi.useFakeTimers())
 afterEach(() => vi.useRealTimers())
 
 describe('SwingPlayer', () => {
-  test('the chapters left on the two shared clips split evenly between them', () => {
-    const clips = (['B05', 'B06', 'B09', 'B11'] as const).map((id) => buildingById(id).clip)
-    expect(clips.filter((c) => c === 'vid/swing-a.mp4')).toHaveLength(2)
-    expect(clips.filter((c) => c === 'vid/swing-b.mp4')).toHaveLength(2)
-  })
-
-  test.each([['B01', 'V01'], ['B02', 'V02'], ['B03', 'V03'], ['B04', 'V04'], ['B07', 'V07'], ['B08', 'V08'], ['B10', 'V10'], ['B12', 'V12']] as const)('%s plays its own swing and freezes on its last frame', (id, clip) => {
+  test.each(chapters)('%s plays its own swing and freezes on its last frame', (id, clip) => {
     const onEnded = vi.fn()
     const { container } = render(<SwingPlayer building={buildingById(id)} onEnded={onEnded} reducedMotion={false} />)
     const video = container.querySelector('video')!
@@ -30,11 +25,11 @@ describe('SwingPlayer', () => {
     expect(onEnded).toHaveBeenCalledTimes(1)
   })
 
-  test('a building on a shared clip plays it muted with CORS, lands on its still and ends once', () => {
+  test('a clip that does not land on its own frame plays muted with CORS, lands on its still and ends once', () => {
     const onEnded = vi.fn()
-    const { container } = render(<SwingPlayer building={shared} onEnded={onEnded} reducedMotion={false} />)
+    const { container } = render(<SwingPlayer building={stillLanding} onEnded={onEnded} reducedMotion={false} />)
     const video = container.querySelector('video')!
-    expect(video.getAttribute('src')).toContain('vid/swing-a.mp4')
+    expect(video.getAttribute('src')).toContain('vid/V05.mp4')
     expect(video.getAttribute('crossorigin')).toBe('anonymous')
     expect(video.muted).toBe(true)
     fireEvent.canPlay(video)

@@ -5,7 +5,7 @@ import Opening, { Intro } from '../../src/components/Opening'
 import { openingBeats } from '../../src/data/opening'
 import type { Audio } from '../../src/lib/audio'
 
-const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), ambient: vi.fn() })
+const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), ambient: vi.fn() })
 
 describe('LoadingScreen', () => {
   test('shows the name, the line and Put it on; clicking unlocks audio and starts', () => {

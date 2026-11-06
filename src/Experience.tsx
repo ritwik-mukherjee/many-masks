@@ -24,9 +24,12 @@ export default function Experience() {
   useEffect(() => saveVisited(visited), [visited])
   useEffect(() => () => audio.dispose(), [audio])
 
-  // A line from the intro, the opening or a chapter never carries on over the city.
+  // Neither a voice line nor the score carries on over the city, and the city's own sound comes back up.
   useEffect(() => {
-    if (state.phase === 'hub') audio.stopVoice()
+    if (state.phase !== 'hub') return
+    audio.stopVoice()
+    audio.stopMusic()
+    audio.ambient('city', 0.35)
   }, [state.phase, audio])
 
   // The opening is a tall scroll section; every other phase is a fixed full-screen stage.
