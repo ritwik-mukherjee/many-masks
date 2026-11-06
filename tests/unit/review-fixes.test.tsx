@@ -94,8 +94,7 @@ describe('Important 4: no black screens while video loads', () => {
     expect(f1.container.querySelector('video')!.getAttribute('poster')).toContain('img/O03.jpg')
     f1.unmount()
     const f4 = render(<Finale state={at('unmasking')} dispatch={vi.fn()} audio={fakeAudio()} />)
-    expect(f4.container.querySelector('img[src*="img/F02.jpg"]')).not.toBeNull()
-    expect(f4.container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
+    expect(f4.container.querySelector('video')!.getAttribute('poster')).toContain('img/F02.jpg')
   })
 })
 

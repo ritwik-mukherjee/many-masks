@@ -55,7 +55,6 @@ function RawClip({ finished, onFinished, onFailed }: { finished: boolean; onFini
         ref={ref}
         className={`fill finale__raw${finished ? ' finale__raw--ended' : ''}`}
         src={media('vid/raw.mp4')}
-        poster={media('img/F05.jpg')}
         playsInline
         onTimeUpdate={(e) => setTime(e.currentTarget.currentTime)}
         onEnded={onFinished}
@@ -74,21 +73,23 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
   const wispr = buildingById('B13')
   const palo = buildingById('B04')
 
-  // Fetch the face while the mask is still on, so the crossfade never fades in to nothing.
+  // Load the pull-off and his clip while the mask is still on, so neither stalls at the big moment.
+  const warmed = useRef<HTMLVideoElement[]>([])
   useEffect(() => {
-    if (step === 'face' && typeof Image === 'function') new Image().src = media('img/F05.jpg')
+    if (step !== 'face' || typeof document === 'undefined') return
+    warmed.current = ['vid/F03.mp4', 'vid/raw.mp4'].map((src) => {
+      const v = document.createElement('video')
+      v.muted = true
+      v.preload = 'auto'
+      v.src = media(src)
+      return v
+    })
   }, [step])
-
-  // The unmasking is a timed crossfade from the mask to the real face.
-  useEffect(() => {
-    if (step !== 'unmasking') return
-    const t = setTimeout(next, 2200)
-    return () => clearTimeout(t)
-  }, [step]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (step === 'swing') audio.sfx('fire')
     if (step === 'face') audio.voice(media('aud/A-F01.mp3'))
+    if (step === 'unmasking') audio.sfx('whoosh')
   }, [step, audio])
 
   // Only if his clip can't play does the recorded line stand in for it.
@@ -102,17 +103,12 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
 
       {step === 'face' && (
         <>
-          <img className="fill finale__still" src={media('img/F02.jpg')} alt="The masked hero in the maroon jacket, yellow goggles and cream face wrap, on a Mumbai rooftop, facing you" />
+          <img className="fill" src={media('img/F02.jpg')} alt="The masked hero in the maroon jacket, yellow goggles and cream face wrap, on a Mumbai rooftop, facing you" />
           <VoiceKey listenAfterMs={PROMPT_MS} onUnmask={() => { audio.stopVoice(); dispatch({ type: 'UNMASK' }) }} />
         </>
       )}
 
-      {step === 'unmasking' && (
-        <>
-          <img className="fill finale__still" src={media('img/F02.jpg')} alt="" />
-          <img className="fill finale__unmask" src={media('img/F05.jpg')} alt="" />
-        </>
-      )}
+      {step === 'unmasking' && <Clip key="unmask" src="vid/F03.mp4" poster="img/F02.jpg" onDone={next} />}
 
       {step === 'reveal' && (
         <>

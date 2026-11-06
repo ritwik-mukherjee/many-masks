@@ -41,14 +41,27 @@ describe('Finale', () => {
     vi.useRealTimers()
   })
 
-  test('unmasking crossfades from the mask to the face and moves on', () => {
-    vi.useFakeTimers()
+  test('unmasking plays the pull-off with a whoosh and moves on when the cloth has gone dark', () => {
+    const dispatch = vi.fn()
+    const audio = fakeAudio()
+    const { container } = render(<Finale state={at('unmasking')} dispatch={dispatch} audio={audio} />)
+    const v = container.querySelector('video')!
+    expect(v.getAttribute('src')).toContain('vid/F03.mp4')
+    expect(audio.sfx).toHaveBeenCalledWith('whoosh')
+    fireEvent.ended(v)
+    expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
+  })
+
+  test('unmasking still moves on if the clip fails', () => {
     const dispatch = vi.fn()
     const { container } = render(<Finale state={at('unmasking')} dispatch={dispatch} audio={fakeAudio()} />)
-    expect(container.querySelector('img[src*="img/F05.jpg"]')).not.toBeNull()
-    act(() => vi.advanceTimersByTime(2200))
+    fireEvent.error(container.querySelector('video')!)
     expect(dispatch).toHaveBeenCalledWith({ type: 'FINALE_NEXT' })
-    vi.useRealTimers()
+  })
+
+  test('the raw clip has no poster, so the black of the cloth cuts straight to him', () => {
+    const { container } = render(<Finale state={at('reveal')} dispatch={vi.fn()} audio={fakeAudio()} />)
+    expect(container.querySelector('video')!.hasAttribute('poster')).toBe(false)
   })
 
   describe('reveal', () => {
