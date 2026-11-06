@@ -137,7 +137,8 @@
 .panel__voice { margin: 0; background: var(--ink); color: var(--cream); padding: 12px 14px; }
 .panel__voice figcaption { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
 .panel__voice blockquote { margin: 4px 0 0; font-family: var(--f-caption); font-size: 16px; line-height: 1.4; }
-.panel__back { justify-self: start; font-size: 22px; padding: 10px 22px; }
+/* Long chapters scroll inside the card, so the way out stays pinned where it can always be seen. */
+.panel__back { justify-self: start; font-size: 22px; padding: 10px 22px; position: sticky; bottom: 0; z-index: 1; }
 .panel .route { z-index: 6; }
 
 /* Finale */
