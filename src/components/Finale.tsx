@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState, type Dispatch } from 'react'
+import { useEffect, useMemo, useRef, useState, type Dispatch } from 'react'
 import { buildingById } from '../data/buildings'
 import { rawClipCaptions } from '../data/rawClip'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
+import { createWarmer } from '../lib/video'
 import type { JourneyAction, JourneyState } from '../state/journey'
 import HoldToSay from './HoldToSay'
 import Growth from './Growth'
 import LensOverlay from './LensOverlay'
+import ManagedVideo from './ManagedVideo'
 
 const SAFETY_MS = 15000
 
@@ -18,7 +20,7 @@ function Clip({ src, poster, onDone, lens = false }: { src: string; poster: stri
   }, [onDone])
   return (
     <>
-      <video className="fill" src={media(src)} poster={media(poster)} autoPlay muted playsInline onEnded={onDone} onError={onDone} />
+      <ManagedVideo className="fill" src={media(src)} poster={media(poster)} autoStart autoPlay muted playsInline onEnded={onDone} onError={onDone} />
       {lens && <LensOverlay visible />}
     </>
   )
@@ -48,8 +50,8 @@ function RawClip({ finished, onFinished, onFailed }: { finished: boolean; onFini
   const caption = rawClipCaptions.find((c) => time >= c.from && time < c.to)
   return (
     <>
-      <video
-        ref={ref}
+      <ManagedVideo
+        videoRef={ref}
         className={`fill finale__raw${finished ? ' finale__raw--ended' : ''}`}
         src={media('vid/raw.mp4')}
         playsInline
@@ -68,18 +70,14 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
   const [clip, setClip] = useState<'playing' | 'ended' | 'failed'>('playing')
   const wispr = buildingById('B13')
 
-  // Load the pull-off and his clip while the mask is still on, so neither stalls at the big moment.
-  const warmed = useRef<HTMLVideoElement[]>([])
+  // Load only the next clip: the pull-off at the mask, then his clip during the pull-off.
+  const warmer = useMemo(createWarmer, [])
   useEffect(() => {
-    if (step !== 'face' || typeof document === 'undefined') return
-    warmed.current = ['vid/F03.mp4', 'vid/raw.mp4'].map((src) => {
-      const v = document.createElement('video')
-      v.muted = true
-      v.preload = 'auto'
-      v.src = media(src)
-      return v
-    })
-  }, [step])
+    if (step === 'face') warmer.warm(media('vid/F03.mp4'))
+    else if (step === 'unmasking') warmer.warm(media('vid/raw.mp4'))
+    else warmer.release()
+  }, [step, warmer])
+  useEffect(() => warmer.release, [warmer])
 
   useEffect(() => {
     if (step === 'swing') audio.sfx('fire')

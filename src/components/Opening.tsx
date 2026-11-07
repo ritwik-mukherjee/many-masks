@@ -6,6 +6,7 @@ import { scrollToTime, shouldSeek } from '../lib/scrub'
 import type { JourneyAction } from '../state/journey'
 import ComicFreeze from './ComicFreeze'
 import LensOverlay from './LensOverlay'
+import ManagedVideo from './ManagedVideo'
 import VoicePill from './VoicePill'
 
 type Props = { dispatch: Dispatch<JourneyAction>; reducedMotion: boolean }
@@ -23,10 +24,11 @@ export function Intro({ dispatch, reducedMotion }: Props) {
   return (
     <section className="intro">
       {!reducedMotion && (
-        <video
+        <ManagedVideo
           className="fill"
           src={media('vid/O02.mp4')}
           poster={media('img/O01.jpg')}
+          autoStart
           autoPlay
           muted
           playsInline
@@ -127,7 +129,7 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
   return (
     <section ref={sectionRef} className="opening" style={{ height: '900vh' }}>
       <div className="opening__stage">
-        <video ref={videoRef} className="fill" src={media('vid/opening.mp4')} poster={media('img/O03.jpg')} muted playsInline preload="auto" crossOrigin="anonymous" />
+        <ManagedVideo videoRef={videoRef} className="fill" src={media('vid/opening.mp4')} poster={media('img/O03.jpg')} muted playsInline preload="auto" crossOrigin="anonymous" />
         {frame && <ComicFreeze source={frame} panelSrc="img/P00.jpg" audio={audio} reducedMotion={false} onDone={() => {}} />}
         <LensOverlay visible={!landed} />
         <p className="opening__beat" key={beat.text}><span className="caption">{beat.text}</span></p>

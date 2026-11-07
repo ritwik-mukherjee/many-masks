@@ -4,6 +4,7 @@ import { rooftopDetails } from '../data/links'
 import { coverTransform } from '../lib/cover'
 import { createDepthScene, depthReader, PIVOT } from '../lib/depthScene'
 import { media } from '../lib/media'
+import { createWarmer } from '../lib/video'
 import type { JourneyAction } from '../state/journey'
 import RouteMap from './RouteMap'
 
@@ -29,8 +30,8 @@ function useViewport() {
   return view
 }
 
-// Chrome ignores <link rel="preload" as="video">, so a held, detached video element does the warming.
-const warmed = new Map<string, HTMLVideoElement>()
+// Chrome ignores <link rel="preload" as="video">, so a held video does the warming, one clip at a time.
+const warmer = createWarmer()
 
 function preload(b: Building) {
   if (typeof document === 'undefined') return
@@ -38,14 +39,7 @@ function preload(b: Building) {
     new Image().src = media(b.landing)
     new Image().src = media(b.panel)
   }
-  if (!b.clip) return
-  const href = media(b.clip)
-  if (warmed.has(href)) return
-  const video = document.createElement('video')
-  video.muted = true
-  video.preload = 'auto'
-  video.src = href
-  warmed.set(href, video)
+  if (b.clip) warmer.warm(media(b.clip))
 }
 
 export default function Hub({ dispatch, visited, reducedMotion = false }: { dispatch: Dispatch<JourneyAction>; visited: BuildingId[]; reducedMotion?: boolean }) {
@@ -108,6 +102,8 @@ export default function Hub({ dispatch, visited, reducedMotion = false }: { disp
   }, [reducedMotion])
 
   const float = (x: number, y: number): CSSProperties => ({ '--d': depthAt ? depthAt(x, y) - PIVOT : 0 }) as CSSProperties
+
+  useEffect(() => warmer.release, [])
 
   const go = (b: Building) => dispatch({ type: 'CLICK_BUILDING', id: b.id })
   const box = { left: offsetX, top: offsetY, width: IMG.w * scale, height: IMG.h * scale }

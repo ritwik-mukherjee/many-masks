@@ -3,6 +3,7 @@ import type { Building } from '../data/buildings'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
 import LensOverlay from './LensOverlay'
+import ManagedVideo from './ManagedVideo'
 
 const PUSH_MS = 1200
 const STALL_MS = 4000
@@ -98,11 +99,12 @@ export default function SwingPlayer({ building, onEnded, reducedMotion, audio }:
   return (
     <section className="swing">
       {mode === 'video' && building.clip && (
-        <video
-          ref={videoRef}
+        <ManagedVideo
+          videoRef={videoRef}
           className="fill"
           src={media(building.clip)}
           crossOrigin="anonymous"
+          autoStart
           autoPlay
           muted
           playsInline
