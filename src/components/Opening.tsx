@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState, type Dispatch } from 'react'
-import { openingBeats } from '../data/opening'
+import { openingBeats, originTranscript } from '../data/opening'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
 import { scrollToTime, shouldSeek } from '../lib/scrub'
 import type { JourneyAction } from '../state/journey'
 import ComicFreeze from './ComicFreeze'
 import LensOverlay from './LensOverlay'
+import VoicePill from './VoicePill'
 
 type Props = { dispatch: Dispatch<JourneyAction>; reducedMotion: boolean }
 
@@ -132,9 +133,12 @@ export default function Opening({ dispatch, audio, reducedMotion }: Props & { au
         <p className="opening__beat" key={beat.text}><span className="caption">{beat.text}</span></p>
         {!landed && progress < 0.02 && <p className="opening__hint">Scroll to swing</p>}
         {landed && (
-          <button type="button" className="cta opening__next" onClick={() => dispatch({ type: 'OPENING_DONE' })}>
-            Into the city
-          </button>
+          <>
+            <div className="opening__live"><VoicePill name="A-P00" text={originTranscript} audio={audio} /></div>
+            <button type="button" className="cta opening__next" onClick={() => dispatch({ type: 'OPENING_DONE' })}>
+              Into the city
+            </button>
+          </>
         )}
         {skip}
       </div>

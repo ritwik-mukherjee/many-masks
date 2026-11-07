@@ -1,3 +1,5 @@
+import type { MarkName } from './marks'
+
 export type District = 'founder' | 'growth' | 'builder' | 'workshop' | 'finale'
 export type BuildingId = 'B01' | 'B02' | 'B03' | 'B04' | 'B05' | 'B06' | 'B07' | 'B08' | 'B09' | 'B10' | 'B11' | 'B12' | 'B13'
 
@@ -24,6 +26,8 @@ export interface Building {
   cracked?: string
   /** Heading for the extra list; defaults to 'Also on this line'. */
   moreTitle?: string
+  /** Logos of the tools this chapter's own text says it used. */
+  marks?: MarkName[]
   /** Related projects or steps shown under the chapter. */
   more?: { name: string; note: string; url?: string }[]
 }
@@ -42,6 +46,7 @@ const media = (n: string) => ({ clip: `vid/V${n}.mp4`, landsOnClip: true, landin
 export const buildings: Building[] = [
   {
     id: 'B01', name: 'CET Campus Circle', district: 'founder', priority: 'M', ...media('01'),
+    marks: ['reddit', 'python'],
     hook: 'The tallest thing I built. Admissions advisory, zero ads.',
     marker: { label: 'CET Campus Circle', at: [26.3, 25] },
     hotspot: [[23.4, 5], [29.2, 4], [29.5, 40], [23.4, 40]],
@@ -71,6 +76,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B04', name: 'Palo', district: 'growth', priority: 'M', ...media('04'),
+    marks: ['instagram'],
     hook: 'Four Mumbai creators onboarded for a Bay Area startup, one researched DM at a time.',
     marker: { label: 'Palo', at: [79.5, 28] },
     hotspot: [[74.6, 27.5], [84.5, 28], [84.5, 53], [74.6, 53]],
@@ -88,6 +94,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B05', name: 'The 220K billboard', district: 'growth', priority: 'S', ...media('05'),
+    marks: ['linkedin'],
     hook: 'My best post. And proposals that stopped losing deals.',
     marker: { label: '220K Billboard', at: [65.7, 20] },
     hotspot: [[61.8, 19.5], [69.5, 19.5], [69.5, 29], [72, 30], [72, 55], [63.5, 55], [63.5, 30]],
@@ -97,6 +104,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B06', name: 'Wagle Estate', district: 'growth', priority: 'S', ...media('06'),
+    marks: ['claude'],
     hook: 'Teaching my neighbourhood to build with AI.',
     marker: { label: 'Wagle Estate', at: [44, 54.5] },
     hotspot: [[37, 53.5], [48, 53.5], [53, 59], [52.5, 69], [31.5, 66], [31.5, 59]],
@@ -107,6 +115,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B07', name: 'Claude Build Day', district: 'builder', priority: 'M', ...media('07'),
+    marks: ['claude'],
     hook: 'Went twice. Won twice. Youngest both times.',
     marker: { label: 'Claude Build Day', at: [44.3, 23] },
     hotspot: [[38, 23], [50, 23], [50, 42], [38, 42]],
@@ -116,6 +125,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B08', name: 'Sadie and the voice stack', district: 'builder', priority: 'M', ...media('08'),
+    marks: ['python', 'claude'],
     hook: 'Voice agents that answer real calls, and a skill that gives Claude an ear.',
     marker: { label: 'Sadie', at: [75.6, 54] },
     hotspot: [[73.5, 54], [79.5, 54], [79.5, 73], [73.5, 73]],
@@ -130,6 +140,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B09', name: 'GPU BenchLab', district: 'builder', priority: 'S', ...media('09'),
+    marks: ['nvidia', 'pytorch', 'onnx'],
     hook: 'When accuracy says 100% and is still wrong.',
     marker: { label: 'GPU BenchLab', at: [89.5, 41] },
     hotspot: [[85, 40.5], [98.5, 41], [98.5, 60], [80.5, 60], [80.5, 53.5], [85, 53.5]],
@@ -161,6 +172,7 @@ export const buildings: Building[] = [
   },
   {
     id: 'B12', name: 'The workshop', district: 'workshop', priority: 'M', ...media('12'),
+    marks: ['espressif', 'raspberrypi'],
     hook: "Not everything here works yet. That's the point.",
     marker: { label: 'The Workshop', at: [85.5, 64] },
     hotspot: [[80, 61], [95.5, 61], [95.5, 76.5], [80, 76.5]],
@@ -180,6 +192,17 @@ export const buildings: Building[] = [
     transcript: "Hi, I'm Ritwik. You've been wearing my masks: the student, the founder, the builder, the Mumbai face of a company on the other side of the world. Here's the one I want next: growing Wispr Flow in India.",
   },
 ]
+
+/** Where to go after a chapter: the next one not yet visited, and Wispr once they've all been seen. */
+export function nextStop(current: BuildingId, visited: BuildingId[]): Building {
+  const chapters = buildings.filter((b) => b.id !== 'B13')
+  const from = chapters.findIndex((b) => b.id === current)
+  for (let i = 1; i <= chapters.length; i++) {
+    const candidate = chapters[(from + i) % chapters.length]
+    if (candidate.id !== current && !visited.includes(candidate.id)) return candidate
+  }
+  return buildingById('B13')
+}
 
 export const buildingById = (id: BuildingId): Building => {
   const b = buildings.find((x) => x.id === id)

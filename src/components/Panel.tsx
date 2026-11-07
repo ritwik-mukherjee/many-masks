@@ -1,21 +1,51 @@
-import { useEffect } from 'react'
-import { districtNames, type Building } from '../data/buildings'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
+import { districtNames, type Building, type BuildingId } from '../data/buildings'
+import { marks } from '../data/marks'
 import type { Audio } from '../lib/audio'
+import { prefersReducedMotion } from '../lib/device'
 import { media } from '../lib/media'
+import Mark from './Mark'
+import VoicePill from './VoicePill'
 
-/** A building's chapter: its comic panel, what was built, the proof, what cracked, and Ritwik's voice line. */
-export default function Panel({ building, onBack, audio }: { building: Building; onBack: () => void; audio: Audio }) {
+/** A building's chapter: its comic panel, what was built, the proof, what cracked, and Ritwik's voice with live captions. */
+export default function Panel({ building, onBack, next, onNext, audio }: {
+  building: Building
+  onBack: () => void
+  next?: Building
+  onNext?: (id: BuildingId) => void
+  audio: Audio
+}) {
+  const stage = useRef<HTMLElement>(null)
+  const [voiceFailed, setVoiceFailed] = useState(false)
+
   useEffect(() => {
     audio.voice(media(building.voice))
     return () => audio.stopVoice()
   }, [audio, building.voice])
 
+  // The art and the card shift against each other with the cursor, so the panel has a little depth.
+  const onMove = (e: MouseEvent) => {
+    const el = stage.current
+    if (!el || prefersReducedMotion()) return
+    el.style.setProperty('--mx', String((e.clientX / innerWidth - 0.5) * 2))
+    el.style.setProperty('--my', String((e.clientY / innerHeight - 0.5) * 2))
+  }
+
+  const voiceName = building.voice.replace(/^.*\/|\.mp3$/g, '')
+
   return (
-    <section className={`panel panel--${building.district}`}>
+    <section ref={stage} className={`panel panel--${building.district}`} onMouseMove={onMove}>
       <img className="fill panel__art" src={media(building.panel)} alt={`Comic panel: ${building.name}`} />
       <article className="panel__card">
         <p className="panel__district">{districtNames[building.district]}</p>
         <h2 className="panel__name">{building.name}</h2>
+        {building.marks && (
+          <ul className="panel__marks">
+            {building.marks.map((name) => (
+              <li key={name}><Mark mark={marks[name]} /> {marks[name].label}</li>
+            ))}
+          </ul>
+        )}
         <div className="panel__block">
           <h3>What I built</h3>
           <p>{building.built}</p>
@@ -43,12 +73,20 @@ export default function Panel({ building, onBack, audio }: { building: Building;
             </ul>
           </div>
         )}
-        <figure className="panel__voice">
-          <figcaption>In my words</figcaption>
+        <details className="panel__voice" open={voiceFailed}>
+          <summary>Read it in my words</summary>
           <blockquote>{building.transcript}</blockquote>
-        </figure>
-        <button type="button" className="cta panel__back" onClick={onBack}>Back to the city</button>
+        </details>
+        <div className="panel__actions">
+          {next && onNext && (
+            <button type="button" className="cta panel__next" onClick={() => onNext(next.id)}>Next: {next.id === 'B13' ? 'Wispr Flow' : next.name}</button>
+          )}
+          <button type="button" className={next && onNext ? 'panel__back' : 'cta panel__back'} onClick={onBack}>Back to the city</button>
+        </div>
       </article>
+      <div className="panel__live">
+        <VoicePill name={voiceName} text={building.transcript} audio={audio} onUnavailable={() => setVoiceFailed(true)} />
+      </div>
     </section>
   )
 }

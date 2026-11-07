@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState, type Dispatch } from 'react'
 import { buildingById } from '../data/buildings'
-import { links } from '../data/links'
 import { rawClipCaptions } from '../data/rawClip'
 import type { Audio } from '../lib/audio'
 import { media } from '../lib/media'
 import type { JourneyAction, JourneyState } from '../state/journey'
 import HoldToSay from './HoldToSay'
-import HowBuilt from './HowBuilt'
+import Growth from './Growth'
 import LensOverlay from './LensOverlay'
 
 const SAFETY_MS = 15000
@@ -66,10 +65,8 @@ function RawClip({ finished, onFinished, onFailed }: { finished: boolean; onFini
 export default function Finale({ state, dispatch, audio }: { state: JourneyState; dispatch: Dispatch<JourneyAction>; audio: Audio }) {
   const step = state.finale
   const next = () => dispatch({ type: 'FINALE_NEXT' })
-  const [howOpen, setHowOpen] = useState(false)
   const [clip, setClip] = useState<'playing' | 'ended' | 'failed'>('playing')
   const wispr = buildingById('B13')
-  const palo = buildingById('B04')
 
   // Load the pull-off and his clip while the mask is still on, so neither stalls at the big moment.
   const warmed = useRef<HTMLVideoElement[]>([])
@@ -126,31 +123,7 @@ export default function Finale({ state, dispatch, audio }: { state: JourneyState
         </>
       )}
 
-      {step === 'growth' && (
-        <div className="finale__growth">
-          <p className="finale__kicker">The one I want next</p>
-          <h2>Growing Wispr Flow in India</h2>
-          <div className="finale__plan">
-            <p>{wispr.proof}</p>
-          </div>
-          <div className="finale__proof">
-            <h3>I've done this before, remotely</h3>
-            <p>{palo.built}</p>
-            <p><strong>{palo.proof}</strong></p>
-          </div>
-          <ul className="finale__links">
-            <li><a href={`mailto:${links.email}`}>{links.email}</a></li>
-            {links.linkedin && <li><a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></li>}
-            <li><a href={links.github} target="_blank" rel="noreferrer">GitHub</a></li>
-            {links.resume && <li><a href={links.resume} target="_blank" rel="noreferrer">Resume</a></li>}
-          </ul>
-          <div className="finale__actions">
-            <button type="button" className="finale__how" onClick={() => setHowOpen(true)}>How this was built</button>
-            <button type="button" className="finale__how" onClick={() => { audio.sfx('whoosh'); dispatch({ type: 'BACK_TO_CITY' }) }}>Back to the city</button>
-          </div>
-          {howOpen && <HowBuilt onClose={() => setHowOpen(false)} />}
-        </div>
-      )}
+      {step === 'growth' && <Growth onBack={() => { audio.sfx('whoosh'); dispatch({ type: 'BACK_TO_CITY' }) }} />}
     </section>
   )
 }

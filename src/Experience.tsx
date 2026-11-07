@@ -7,7 +7,7 @@ import Opening, { Intro } from './components/Opening'
 import Panel from './components/Panel'
 import RouteMap from './components/RouteMap'
 import SwingPlayer from './components/SwingPlayer'
-import { buildingById, type BuildingId } from './data/buildings'
+import { buildingById, nextStop, type BuildingId } from './data/buildings'
 import { createAudio } from './lib/audio'
 import { prefersReducedMotion } from './lib/device'
 import { loadVisited, saveVisited } from './lib/visited'
@@ -68,6 +68,8 @@ export default function Experience() {
             building={buildingById(state.current)}
             audio={audio}
             onBack={() => { audio.sfx('whoosh'); dispatch({ type: 'BACK_TO_CITY' }) }}
+            next={nextStop(state.current, visited)}
+            onNext={(id) => dispatch({ type: 'CLICK_BUILDING', id })}
           />
           <RouteMap dispatch={dispatch} visited={visited} defaultOpen={false} />
         </>

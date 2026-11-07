@@ -113,32 +113,71 @@
 .freeze__canvas { object-fit: cover; }
 .freeze--css .freeze__canvas { transition: filter 900ms ease; }
 .freeze--css .freeze__canvas.is-inked { filter: contrast(1.6) saturate(0.6); }
-.freeze__panel { opacity: 0; transition: opacity 400ms ease; }
-.freeze__panel.is-on { opacity: 1; }
+/* The panel prints in through growing halftone dots, not a crossfade, which ghosted the two pictures over each other. */
+@property --dot { syntax: '<length>'; inherits: false; initial-value: 0px; }
+.freeze__panel { transform: scale(1.03); visibility: hidden; }
+.freeze__panel.is-on {
+  visibility: visible;
+  -webkit-mask: radial-gradient(circle at center, #000 var(--dot), transparent calc(var(--dot) + 1px)) 0 0 / 34px 34px;
+  mask: radial-gradient(circle at center, #000 var(--dot), transparent calc(var(--dot) + 1px)) 0 0 / 34px 34px;
+  animation: halftone-wipe 400ms cubic-bezier(0.5, 0, 0.9, 0.6) forwards;
+}
+@keyframes halftone-wipe { from { --dot: 0px; } to { --dot: 26px; } }
+.freeze--reduced .freeze__panel { visibility: visible; }
+.freeze--reduced .freeze__panel.is-on { -webkit-mask: none; mask: none; animation: none; }
 .opening__stage .freeze { position: absolute; }
 
 /* Panel */
 .panel { position: fixed; inset: 0; overflow: hidden; background: #000; }
-.panel__art { animation: panel-drift 30s ease-out forwards; }
-@keyframes panel-drift { to { transform: scale(1.06); } }
+.panel { --mx: 0; --my: 0; }
+/* The art drifts in, and slides against the cursor while the card tilts toward it: two planes, a little depth. */
+.panel__art { translate: calc(var(--mx) * -14px) calc(var(--my) * -9px); transform: scale(1.03); transition: translate 500ms var(--ease-swing); animation: panel-drift 30s ease-out forwards; }
+@keyframes panel-drift { from { transform: scale(1.03); } to { transform: scale(1.08); } }
 .panel__card {
-  position: absolute; left: 32px; top: 50%; transform: translateY(-50%); z-index: 2;
+  position: absolute; left: 32px; top: 50%; z-index: 2;
+  transform: translateY(-50%) perspective(1400px) rotateY(calc(var(--mx) * 2.2deg)) rotateX(calc(var(--my) * -1.6deg));
+  transition: transform 500ms var(--ease-swing);
   width: min(30rem, 42vw); max-height: calc(100vh - 64px); overflow: auto;
   background: var(--cream); color: var(--ink); border: 4px solid var(--ink); box-shadow: 8px 8px 0 var(--ink);
-  padding: 22px 24px; display: grid; gap: 12px; animation: card-in 420ms var(--ease-swing);
+  padding: 22px 24px; display: grid; gap: 12px; animation: card-in 360ms cubic-bezier(0.2, 1.25, 0.4, 1);
 }
-@keyframes card-in { from { opacity: 0; transform: translate(-24px, -50%) rotate(-1.5deg); } to { opacity: 1; transform: translateY(-50%); } }
+/* The card lands like a comic panel being slapped down, instead of fading in over the art. */
+@keyframes card-in { from { transform: translate(-112%, -50%) rotate(-3deg); } }
+.panel__marks { list-style: none; margin: -4px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 14px; font-weight: 600; }
+.panel__marks li { display: inline-flex; align-items: center; gap: 6px; }
+.mark { width: 16px; height: 16px; flex: none; }
 .panel__district { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--maroon); }
 .panel__name { margin: 0; font-family: var(--f-display); font-weight: 400; font-size: clamp(36px, 3.2vw, 52px); line-height: 1; }
 .panel__block h3 { margin: 0 0 2px; font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: rgb(14 14 16 / 0.6); }
 .panel__block p { margin: 0; font-size: 16px; line-height: 1.45; }
 .panel__block--proof p { font-weight: 600; }
 .panel__block--cracked { border-left: 4px solid var(--maroon); padding-left: 10px; }
-.panel__voice { margin: 0; background: var(--ink); color: var(--cream); padding: 12px 14px; }
-.panel__voice figcaption { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--signal); }
-.panel__voice blockquote { margin: 4px 0 0; font-family: var(--f-caption); font-size: 16px; line-height: 1.4; }
-/* Long chapters scroll inside the card, so the way out stays pinned where it can always be seen. */
-.panel__back { justify-self: start; font-size: 22px; padding: 10px 22px; position: sticky; bottom: 0; z-index: 1; }
+.panel__voice summary { width: fit-content; cursor: pointer; font-size: 15px; font-weight: 600; color: var(--maroon); }
+.panel__voice blockquote { margin: 6px 0 0; padding: 12px 14px; background: var(--ink); color: var(--cream); font-family: var(--f-caption); font-size: 16px; line-height: 1.4; }
+/* Long chapters scroll inside the card, so the way on stays pinned where it can always be seen. */
+.panel__actions { position: sticky; bottom: -22px; z-index: 1; margin: 0 -24px -22px; padding: 12px 24px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; background: var(--cream); border-top: 2px solid var(--ink); }
+.panel__actions .cta { font-size: 20px; padding: 9px 16px; }
+.panel__back:not(.cta) { padding: 4px 0; border: 0; background: none; color: var(--ink); font-size: 15px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.panel__back:not(.cta):hover { color: var(--maroon); }
+
+/* The live voice: a pill with a waveform, and the words arriving as they're spoken. Flow's idea, in this comic's ink. */
+.panel__live { position: absolute; z-index: 3; left: calc(32px + min(30rem, 42vw) + 28px); right: 28px; bottom: 26px; display: flex; justify-content: center; pointer-events: none; }
+.opening__live { position: absolute; z-index: 14; left: 6vw; right: 6vw; bottom: 3.5vh; display: flex; justify-content: center; pointer-events: none; }
+.voicepill { pointer-events: auto; display: flex; align-items: center; gap: 14px; max-width: min(46rem, 100%); padding: 7px 22px 7px 7px; background: rgb(14 14 16 / 0.9); border: 2px solid var(--ink); border-radius: 999px; box-shadow: 4px 4px 0 var(--ink); animation: pill-in 320ms var(--ease-swing) both; }
+@keyframes pill-in { from { opacity: 0; translate: 0 14px; } }
+.voicepill__button { flex: none; width: 54px; height: 40px; display: grid; place-items: center; border: 0; border-radius: 999px; background: var(--signal); cursor: pointer; transition: background 120ms ease; }
+.voicepill__button:hover { background: var(--cream); }
+.voicepill__bars { display: flex; align-items: center; gap: 2.5px; height: 20px; }
+.voicepill__bars i { width: 2.5px; height: 100%; border-radius: 2px; background: var(--ink); transform: scaleY(0.25); }
+.voicepill--playing .voicepill__bars i { animation: pill-bar 860ms ease-in-out infinite; }
+.voicepill__bars i:nth-child(2n) { animation-delay: -280ms; }
+.voicepill__bars i:nth-child(3n) { animation-delay: -590ms; }
+.voicepill__bars i:nth-child(4n + 1) { animation-delay: -120ms; }
+@keyframes pill-bar { 0%, 100% { transform: scaleY(0.25); } 50% { transform: scaleY(1); } }
+.voicepill__words { margin: 0; color: rgb(242 232 207 / 0.34); font-family: var(--f-caption); font-size: clamp(16px, 1.35vw, 21px); line-height: 1.3; animation: words-in 180ms ease-out both; }
+@keyframes words-in { from { opacity: 0; translate: 0 5px; } }
+.voicepill__words span { transition: color 110ms linear; }
+.voicepill__words .is-said { color: var(--cream); }
 .panel .route { z-index: 6; }
 
 /* Finale */

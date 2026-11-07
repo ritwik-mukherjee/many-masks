@@ -4,7 +4,7 @@ import Panel from '../../src/components/Panel'
 import { buildingById } from '../../src/data/buildings'
 import type { Audio } from '../../src/lib/audio'
 
-const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), ambient: vi.fn() })
+const fakeAudio = (): Audio => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), voiceClock: vi.fn(() => null), toggleVoice: vi.fn(), ambient: vi.fn() })
 
 test('shows the chapter, plays the voice line, and goes back to the city', () => {
   const audio = fakeAudio()

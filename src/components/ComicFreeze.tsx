@@ -67,8 +67,8 @@ function isBlank(source: HTMLCanvasElement): boolean {
 }
 
 /**
- * The landing moment: the last swing frame inks over into comic art (900 ms), then crossfades into the
- * generated comic panel (400 ms). Without WebGL it uses a CSS filter instead; reduced motion just crossfades.
+ * The landing moment: the last swing frame inks over into comic art (900 ms), then the generated comic
+ * panel prints in through growing halftone dots (400 ms). Without WebGL it uses a CSS filter instead; reduced motion just crossfades.
  */
 export default function ComicFreeze({ source, panelSrc, onDone, reducedMotion, audio }: {
   source: HTMLCanvasElement
@@ -114,7 +114,13 @@ export default function ComicFreeze({ source, panelSrc, onDone, reducedMotion, a
     }
     const t1 = setTimeout(() => setPanelOn(true), INK_MS)
     const t2 = setTimeout(onDone, INK_MS + FADE_MS + 100)
-    return () => { cancelAnimationFrame(raf); clearTimeout(t1); clearTimeout(t2) }
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(t1)
+      clearTimeout(t2)
+      // Contexts are limited, and every landing would otherwise leave one behind.
+      try { canvasRef.current?.getContext('webgl')?.getExtension('WEBGL_lose_context')?.loseContext() } catch { /* nothing to release */ }
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

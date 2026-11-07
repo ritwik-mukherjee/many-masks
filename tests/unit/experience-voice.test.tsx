@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import Experience from '../../src/Experience'
 
-const fake = vi.hoisted(() => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), ambient: vi.fn(), dispose: vi.fn() }))
+const fake = vi.hoisted(() => ({ unlock: vi.fn(), unlocked: () => true, sfx: vi.fn(), voice: vi.fn(), stopVoice: vi.fn(), music: vi.fn(), stopMusic: vi.fn(), voiceClock: vi.fn(() => null), toggleVoice: vi.fn(), ambient: vi.fn(), dispose: vi.fn() }))
 vi.mock('../../src/lib/audio', () => ({ createAudio: () => fake }))
 
 describe('Experience voice', () => {

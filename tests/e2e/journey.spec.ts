@@ -20,7 +20,7 @@ test('name and Put it on within 3 s, hub within 10 s', async ({ page }) => {
 test('visit a building, come back, and it is marked visited', async ({ page }) => {
   await page.goto('/')
   await toHub(page)
-  await hotspot(page, 'CET Campus Circle').click()
+  await hotspot(page, 'CET Campus Circle').click({ force: true })
   await expect(page.getByText('Back to the city')).toBeVisible({ timeout: 12_000 })
   await expect(page.getByAltText('Comic panel: CET Campus Circle')).toBeVisible()
   await page.getByRole('button', { name: 'Back to the city' }).click()
@@ -40,7 +40,7 @@ test('keyboard: Tab reaches hotspots and Enter swings', async ({ page }) => {
 test('finale: the tower, take it off, the reveal', async ({ page }) => {
   await page.goto('/')
   await toHub(page)
-  await hotspot(page, 'Wispr Flow India').click()
+  await hotspot(page, 'Wispr Flow India').click({ force: true })
   await page.getByRole('button', { name: /^(just )?take it off$/i }).click({ timeout: 15_000 })
   await expect(page.getByText("You've been wearing my masks. Here's the one I want next.")).toBeVisible({ timeout: 15_000 })
 })

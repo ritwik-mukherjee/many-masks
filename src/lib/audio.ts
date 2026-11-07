@@ -61,6 +61,19 @@ export function createAudio() {
       currentVoice?.pause()
       currentVoice = null
     },
+    /** Where the current voice line has got to, or null when none is playing. */
+    voiceClock() {
+      if (!currentVoice) return null
+      const el = currentVoice
+      return { time: el.currentTime, duration: el.duration, paused: el.paused, ended: el.ended, failed: Boolean(el.error) }
+    },
+    /** Pauses the voice line, resumes it, or plays it again once it has ended. */
+    toggleVoice() {
+      const el = currentVoice
+      if (!el) return
+      if (el.paused) safePlay(el)
+      else el.pause()
+    },
     /** The score. Starts only once; calling it again while it plays does nothing. */
     music(src: string, volume = 0.8) {
       if (!isUnlocked || currentMusic) return

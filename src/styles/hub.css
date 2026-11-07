@@ -2,18 +2,28 @@
 /* clip, not hidden: the slightly oversized world must never be scrolled by focus moving to an edge building. */
 .hub { position: fixed; inset: 0; overflow: clip; background: #1b120c; }
 /* Arriving in the city: the camera pulls back and the skyline comes up. Only the world moves, so the fixed UI stays put. */
-.hub__img, .hub__svg { animation: hub-arrive 800ms var(--ease-swing) both; transform-origin: 50% 55%; }
+.hub__img, .hub__scene, .hub__svg { animation: hub-arrive 800ms var(--ease-swing) both; transform-origin: 50% 55%; }
 @keyframes hub-arrive { from { transform: scale(1.16); filter: brightness(0.3) blur(8px); } to { transform: none; filter: none; } }
-.hub__world { position: absolute; transition: transform 600ms var(--ease-swing); will-change: transform; }
-.hub__img, .hub__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Slightly oversized, so the depth shift never shows an edge. */
+.hub__world { --sx: 0px; --sy: 0px; position: absolute; transform: scale(1.03); }
+.hub__img, .hub__scene, .hub__svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.hub__scene { opacity: 0; }
+.hub__scene.is-on { opacity: 1; }
 .hub__spot {
   fill: rgb(242 194 48 / 0); stroke: rgb(242 194 48 / 0); stroke-width: 6; cursor: pointer; outline: none;
   transition: fill 160ms ease, stroke 160ms ease;
 }
 .hub__spot:hover, .hub__spot:focus-visible, .hub__spot.is-hot { fill: rgb(242 194 48 / 0.16); stroke: var(--signal); }
-.hub__spot.is-visited { stroke: rgb(242 232 207 / 0.35); stroke-dasharray: 18 12; }
-.hub__spot--wispr { fill: rgb(255 214 120 / 0.22); animation: wispr-glow 2.4s ease-in-out infinite; }
-@keyframes wispr-glow { 50% { fill: rgb(255 214 120 / 0.5); stroke: rgb(255 214 120 / 0.8); } }
+/* Each thing on the skyline floats by its own depth (--d), matching the picture beneath it. */
+.hub__spot, .hub__billboard, .hub__marker, .hub__beacon, .hub__tip { translate: calc(var(--sx) * var(--d, 0)) calc(var(--sy) * var(--d, 0)); }
+/* The goal on the horizon: a signal rising from the far tower. */
+.hub__beacon { position: absolute; width: 0; height: 0; z-index: 1; pointer-events: none; }
+.hub__beacon::before { content: ''; position: absolute; left: -46px; top: -46px; width: 92px; height: 92px; border-radius: 50%; background: radial-gradient(circle, rgb(255 226 140 / 0.75), rgb(255 206 90 / 0.25) 42%, transparent 70%); animation: beacon-breathe 2.8s ease-in-out infinite; }
+.hub__beacon i { position: absolute; left: -22px; top: -22px; width: 44px; height: 44px; border: 2px solid rgb(255 226 140 / 0.9); border-radius: 50%; opacity: 0; animation: beacon-ring 3s ease-out infinite; }
+.hub__beacon i:nth-child(2) { animation-delay: 1s; }
+.hub__beacon i:nth-child(3) { animation-delay: 2s; }
+@keyframes beacon-breathe { 50% { opacity: 0.55; scale: 1.15; } }
+@keyframes beacon-ring { from { opacity: 0.85; scale: 0.3; } to { opacity: 0; scale: 2.6; } }
 .hub__billboard { font-family: var(--f-display); font-size: 62px; fill: #1d1b1a; letter-spacing: 2px; pointer-events: none; }
 
 /* Name tags: comic captions pinned to the rooflines, each with a tail pointing at its building. */
@@ -49,7 +59,7 @@
 .hub__tip strong { font-family: var(--f-display); font-weight: 400; font-size: 22px; letter-spacing: 0.02em; }
 .hub__tip span { font-family: var(--f-caption); font-weight: 700; }
 
-.hub__head { position: absolute; left: 32px; top: 24px; z-index: 4; pointer-events: none; text-shadow: 0 2px 12px rgb(0 0 0 / 0.6); }
+.hub__head { position: absolute; left: 0; top: 0; z-index: 4; padding: 24px 90px 40px 32px; pointer-events: none; text-shadow: 0 2px 12px rgb(0 0 0 / 0.75); background: radial-gradient(ellipse at 0 0, rgb(14 14 16 / 0.72), transparent 72%); }
 .hub__title { margin: 0; font-family: var(--f-display); font-size: clamp(28px, 2.6vw, 40px); letter-spacing: 0.02em; }
 .hub__sub { margin: 0; font-size: 16px; opacity: 0.85; }
 
@@ -57,8 +67,9 @@
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; margin: 0; overflow: hidden; white-space: nowrap;
   background: rgb(14 14 16 / 0.72); border-top: 2px solid var(--signal); padding: 6px 0; font-size: 14px; color: var(--signal);
 }
-.hub__ticker span { display: inline-block; padding-left: 100%; animation: ticker 60s linear infinite; }
-@keyframes ticker { to { transform: translateX(-100%); } }
+/* The text is doubled, so sliding by half loops seamlessly and the strip is never empty. */
+.hub__ticker span { display: inline-block; animation: ticker 70s linear infinite; }
+@keyframes ticker { to { transform: translateX(-50%); } }
 
 /* Route map */
 .route {

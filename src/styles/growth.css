@@ -1,0 +1,94 @@
+/*
+ * The last page. Everything before it is comic ink and Mumbai dusk. With the mask off, the site walks into Wispr
+ * Flow's own world: their cream, teal, serif and waveform pill. That change of world is the point of the page.
+ */
+.growth {
+  --w-cream: #ffffeb;
+  --w-teal: #034f46;
+  --w-ink: #1a1a1a;
+  --w-lilac: #f0d7ff;
+  --w-orange: #ffa946;
+  --w-serif: 'EB Garamond', Georgia, serif;
+  --w-sans: 'Figtree', system-ui, sans-serif;
+  position: absolute; inset: 0; overflow: auto; overflow-x: hidden; color-scheme: light;
+  background: var(--w-cream); color: var(--w-ink); font-family: var(--w-sans);
+  animation: growth-open 900ms cubic-bezier(0.7, 0, 0.2, 1) both;
+}
+@keyframes growth-open { from { clip-path: circle(0% at 16% 78%); } to { clip-path: circle(150% at 16% 78%); } }
+.growth h2, .growth h3, .growth h4 { margin: 0; font-family: var(--w-serif); font-weight: 400; }
+.growth p, .growth ol, .growth ul { margin: 0; }
+
+/* Opening: the title, then speech running through the pill and coming out clean. The teal below peeks in to invite a scroll. */
+.growth__open { min-height: 86vh; display: grid; grid-template-rows: auto 1fr auto; padding: 28px 0 8vh; text-align: center; }
+.growth__byline { font-size: 16px; font-weight: 600; }
+.growth__title { align-self: center; padding: 3vh 5vw; font-size: clamp(64px, 9.4vw, 148px); line-height: 0.98; letter-spacing: -0.015em; }
+.growth__title em { display: block; }
+
+.growth__ribbon { position: relative; width: 112%; margin-left: -6%; rotate: -1.6deg; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; }
+.growth__strip { overflow: hidden; background: var(--w-ink); color: var(--w-cream); padding: 9px 0; white-space: pre; }
+.growth__strip span { display: inline-block; animation: growth-ribbon 90s linear infinite; }
+.growth__strip--raw { margin-right: -30px; font-size: 19px; opacity: 0.86; }
+.growth__strip--clean { margin-left: -30px; padding: 3px 0 5px; font-family: var(--w-serif); font-size: 27px; }
+.growth__strip--clean span { animation-duration: 55s; }
+/* Both strips travel the same way: toward the pill on the left, away from it on the right. */
+@keyframes growth-ribbon { from { transform: translateX(-33.333%); } to { transform: translateX(0); } }
+.growth__pill { position: relative; z-index: 1; padding: 13px 22px; background: var(--w-ink); border: 2px solid var(--w-cream); border-radius: 999px; }
+.growth__bars { display: flex; align-items: center; gap: 4px; height: 26px; }
+.growth__bars i { width: 3px; height: 100%; border-radius: 2px; background: var(--w-cream); animation: growth-bar 900ms ease-in-out infinite; }
+.growth__bars i:nth-child(2n) { animation-delay: -300ms; }
+.growth__bars i:nth-child(3n) { animation-delay: -620ms; }
+.growth__bars i:nth-child(4n + 1) { animation-delay: -150ms; }
+@keyframes growth-bar { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
+/* The gap: the argument, then the two numbers drawn to one scale. */
+.growth__gap { background: var(--w-teal); color: var(--w-cream); border-radius: 44px 44px 0 0; padding: 11vh 7vw 13vh; }
+.growth__gap-line { max-width: 19ch; text-wrap: balance; font-size: clamp(50px, 6.6vw, 104px); line-height: 1.02; letter-spacing: -0.01em; }
+.growth__chart { margin: 8vh 0 0; display: grid; gap: 22px; }
+.growth__row { display: grid; grid-template-columns: 7.5rem 1fr; column-gap: 20px; align-items: center; }
+.growth__value { grid-row: 1 / span 2; font-family: var(--w-serif); font-size: clamp(56px, 5.4vw, 80px); line-height: 1; }
+.growth__track { align-self: end; }
+.growth__bar { height: 20px; border-radius: 4px; background: var(--w-orange); transform-origin: left; animation: growth-bar-in 900ms var(--ease-swing) 500ms both; }
+@keyframes growth-bar-in { from { transform: scaleX(0); } }
+.growth__label { align-self: start; padding-top: 6px; font-size: 18px; }
+.growth__chart figcaption { margin-top: 12px; max-width: 48ch; font-size: 16px; line-height: 1.5; opacity: 0.82; }
+
+/* The plan is a real order, so it's numbered. The proof sits beside it in lilac. */
+.growth__plan { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 7vh 6vw; padding: 12vh 7vw; }
+.growth__plan > h3 { grid-column: 1 / -1; font-size: clamp(44px, 5vw, 76px); line-height: 1.04; }
+.growth__plan ol { list-style: none; padding: 0; counter-reset: step; display: grid; gap: 40px; align-content: start; }
+.growth__plan li { counter-increment: step; position: relative; padding-left: 62px; }
+.growth__plan li::before { content: counter(step); position: absolute; left: 0; top: -2px; font-family: var(--w-serif); font-style: italic; font-size: 46px; line-height: 1; color: var(--w-teal); }
+.growth__plan h4 { font-size: 32px; line-height: 1.12; }
+.growth__plan li p { margin-top: 8px; max-width: 46ch; font-size: 18px; line-height: 1.55; }
+.growth__proof { align-self: start; padding: 32px 34px 36px; border-radius: 28px; background: var(--w-lilac); }
+.growth__proof h3 { font-size: 32px; line-height: 1.12; }
+.growth__proof p { margin-top: 12px; font-size: 17px; line-height: 1.55; }
+.growth__proof-result { font-weight: 600; }
+
+/* The ask. */
+.growth__close { background: var(--w-orange); border-radius: 44px 44px 0 0; padding: 12vh 7vw 9vh; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px 5vw; justify-items: start; align-content: start; }
+.growth__close > :not(.growth__me) { grid-column: 1; }
+.growth__me { grid-column: 2; grid-row: 1 / span 4; align-self: center; width: clamp(220px, 23vw, 340px); aspect-ratio: 4 / 5; object-fit: cover; border-radius: 28px; rotate: 2deg; }
+.growth__ask { font-size: clamp(72px, 10vw, 160px); line-height: 0.95; letter-spacing: -0.015em; }
+.growth__email { font-family: var(--w-serif); font-style: italic; font-size: clamp(26px, 3vw, 44px); color: var(--w-ink); overflow-wrap: anywhere; text-underline-offset: 6px; text-decoration-thickness: 2px; }
+.growth__links { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 26px; }
+.growth__links a { display: inline-flex; align-items: center; gap: 8px; color: var(--w-ink); font-weight: 600; text-underline-offset: 4px; }
+.growth__links .mark { width: 18px; height: 18px; }
+.growth__actions { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 12px; }
+.growth__actions button { padding: 11px 20px; border: 2px solid var(--w-ink); border-radius: 999px; background: transparent; color: var(--w-ink); font: 600 16px var(--w-sans); cursor: pointer; transition: background 140ms ease, color 140ms ease; }
+.growth__actions button:hover { background: var(--w-ink); color: var(--w-cream); }
+.growth a:focus-visible, .growth button:focus-visible { outline: 3px solid var(--w-teal); outline-offset: 3px; }
+
+/* How this was built, in this world. */
+.growth .howbuilt__card { background: var(--w-cream); color: var(--w-ink); border: 0; border-radius: 28px; box-shadow: 0 24px 70px rgb(3 79 70 / 0.35); font-family: var(--w-sans); line-height: 1.55; }
+.growth .howbuilt__card h2 { font-family: var(--w-serif); }
+.growth .howbuilt__card .cta { border: 0; border-radius: 999px; background: var(--w-teal); color: var(--w-cream); box-shadow: none; font: 600 16px var(--w-sans); padding: 11px 22px; transform: none; }
+
+@media (max-width: 1000px) {
+  .growth__plan { grid-template-columns: 1fr; }
+  .growth__close { grid-template-columns: 1fr; }
+  .growth__me { grid-column: 1; grid-row: auto; rotate: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .growth__strip span, .growth__bars i { animation: none; }
+}
