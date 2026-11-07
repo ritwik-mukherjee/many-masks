@@ -56,13 +56,16 @@ export default function Hub({ dispatch, visited, reducedMotion = false }: { disp
     if (reducedMotion) return
     let raf = 0
     let dead = false
+    let started = false
     let dispose = () => {}
     const color = new Image()
     const depth = new Image()
     color.crossOrigin = 'anonymous'
     depth.crossOrigin = 'anonymous'
     const start = () => {
-      if (dead || !color.complete || !depth.complete || !color.naturalWidth || !depth.naturalWidth || !canvas.current) return
+      // Both images can already be cached, so both load events see them ready: only the first may start the scene.
+      if (started || dead || !color.complete || !depth.complete || !color.naturalWidth || !depth.naturalWidth || !canvas.current) return
+      started = true
       const scene = createDepthScene(canvas.current, color, depth)
       if (!scene) return
       dispose = scene.dispose
